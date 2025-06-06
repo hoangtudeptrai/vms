@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,9 +14,12 @@ import (
 // @Summary      Create a new Notification
 // @Description  Takes a notification JSON and stores in DB. Returns saved JSON.
 // @Tags         Notification
+// @Accept       json
 // @Produce      json
 // @Param        notification  body  model.CreateNotification  true  "Notification JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.CreateNotification]
+// @Failure      400  {object}  model.JsonDTORsp[model.CreateNotification]
+// @Failure      500  {object}  model.JsonDTORsp[model.CreateNotification]
 // @Router       /notifications [post]
 // @Security     BearerAuth
 func CreateNotification(c *gin.Context) {
@@ -41,20 +45,23 @@ func CreateNotification(c *gin.Context) {
 	c.JSON(http.StatusCreated, &jsonRsp)
 }
 
-// ReadNotification godoc
+// GetNotificationByID godoc
 // @Summary      Get single notification by id
 // @Description  Returns the notification whose ID value matches the id.
 // @Tags         Notification
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Read notification by id"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateNotification]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateNotification]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateNotification]
 // @Router       /notifications/{id} [get]
 // @Security     BearerAuth
-func ReadNotification(c *gin.Context) {
+func GetNotificationByID(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[model.UpdateNotification]()
 	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateNotification, model.Notification](c.Param("id"))
 	if err != nil {
-		jsonRsp.Code = statuscode.StatusUpdateItemFailed
+		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusNotFound, &jsonRsp)
 		return
@@ -63,30 +70,60 @@ func ReadNotification(c *gin.Context) {
 	c.JSON(http.StatusOK, &jsonRsp)
 }
 
+// GetNotifications godoc
+// @Summary      Get all notifications
+// @Description  Returns all notifications from the database.
+// @Tags         Notification
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateNotification]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateNotification]
+// @Router       /notifications [get]
+// @Security     BearerAuth
+func GetNotifications(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.UpdateNotification]()
+
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateNotification, model.Notification]("")
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}
+
 // UpdateNotification godoc
 // @Summary      Update single notification by id
-// @Description  Updates and returns a single notification whose ID value matches the id. New data must be passed in the body.
+// @Description  Updates and returns a single notification whose ID value matches the id.
 // @Tags         Notification
+// @Accept       json
 // @Produce      json
-// @Param        id  path  string  true  "Update notification by id"
-// @Param        notification  body  model.CreateNotification  true  "Notification JSON"
-// @Success      200  {object}  model.JsonDTORsp[model.CreateNotification]
+// @Param        id   path  string  true  "Update notification by id"
+// @Param        notification body  model.UpdateNotification  true  "Notification JSON"
+// @Success      200  {object}  model.JsonDTORsp[model.UpdateNotification]
+// @Failure      400  {object}  model.JsonDTORsp[model.UpdateNotification]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateNotification]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateNotification]
 // @Router       /notifications/{id} [put]
 // @Security     BearerAuth
 func UpdateNotification(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[model.CreateNotification]()
+	jsonRsp := model.NewJsonDTORsp[model.UpdateNotification]()
 
-	var dto model.CreateNotification
+	var dto model.UpdateNotification
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		jsonRsp.Code = http.StatusBadRequest
+		jsonRsp.Code = statuscode.StatusBindingInputJsonFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, &jsonRsp)
 		return
 	}
 
-	dto, err := reposity.UpdateItemByIDFromDTO[model.CreateNotification, model.Notification](c.Param("id"), dto)
+	dto, err := reposity.UpdateItemByIDFromDTO[model.UpdateNotification, model.Notification](c.Param("id"), dto)
 	if err != nil {
-		jsonRsp.Code = http.StatusInternalServerError
+		jsonRsp.Code = statuscode.StatusUpdateItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusInternalServerError, &jsonRsp)
 		return
@@ -100,9 +137,12 @@ func UpdateNotification(c *gin.Context) {
 // @Summary      Remove single notification by id
 // @Description  Deletes a single notification from the repository based on id.
 // @Tags         Notification
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Delete notification by id"
-// @Success      204
+// @Success      204  "No Content"
+// @Failure      404  {object}  model.JsonDTORsp[model.Notification]
+// @Failure      500  {object}  model.JsonDTORsp[model.Notification]
 // @Router       /notifications/{id} [delete]
 // @Security     BearerAuth
 func DeleteNotification(c *gin.Context) {

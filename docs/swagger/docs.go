@@ -16,6 +16,38 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/assignments": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all assignments from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assignment"
+                ],
+                "summary": "Get all assignments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -23,6 +55,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes an assignment JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -47,6 +82,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment"
+                        }
                     }
                 }
             }
@@ -59,6 +106,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the assignment whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -81,6 +131,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
                     }
                 }
             },
@@ -90,7 +152,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single assignment whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single assignment whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -112,7 +177,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateAssignment"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment"
                         }
                     }
                 ],
@@ -120,7 +185,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment"
                         }
                     }
                 }
@@ -132,6 +215,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single assignment from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -151,6 +237,18 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment"
+                        }
                     }
                 }
             }
@@ -201,9 +299,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/register": {
-            "post": {
-                "description": "Register a new user",
+        "/course-materials": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all course materials from the database.",
                 "consumes": [
                     "application/json"
                 ],
@@ -211,43 +314,262 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "CourseMaterial"
                 ],
-                "summary": "User registration",
-                "parameters": [
-                    {
-                        "description": "Registration details",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/internal_auth.RegisterRequest"
-                        }
-                    }
-                ],
+                "summary": "Get all course materials",
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Takes a course material JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CourseMaterial"
+                ],
+                "summary": "Create a new Course Material",
+                "parameters": [
+                    {
+                        "description": "Course Material JSON",
+                        "name": "material",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial"
+                        }
+                    }
+                }
+            }
+        },
+        "/course-materials/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns the course material whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CourseMaterial"
+                ],
+                "summary": "Get single course material by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Read course material by id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Updates and returns a single course material whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CourseMaterial"
+                ],
+                "summary": "Update single course material by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Update course material by id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Course Material JSON",
+                        "name": "material",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes a single course material from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CourseMaterial"
+                ],
+                "summary": "Remove single course material by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Delete course material by id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial"
                         }
                     }
                 }
             }
         },
         "/courses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all courses from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Course"
+                ],
+                "summary": "Get all courses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -255,6 +577,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes a course JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -279,6 +604,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse"
+                        }
                     }
                 }
             }
@@ -291,6 +628,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the course whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -313,6 +653,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
                     }
                 }
             },
@@ -322,7 +674,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single course whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single course whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -344,7 +699,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourse"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourse"
                         }
                     }
                 ],
@@ -352,7 +707,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse"
                         }
                     }
                 }
@@ -364,6 +737,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single course from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -383,11 +759,55 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course"
+                        }
                     }
                 }
             }
         },
         "/documents": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all documents from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Document"
+                ],
+                "summary": "Get all documents",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -395,6 +815,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes a document JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -419,6 +842,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument"
+                        }
                     }
                 }
             }
@@ -431,6 +866,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the document whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -453,6 +891,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
                     }
                 }
             },
@@ -462,7 +912,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single document whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single document whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -484,7 +937,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateDocument"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateDocument"
                         }
                     }
                 ],
@@ -492,7 +945,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument"
                         }
                     }
                 }
@@ -504,6 +975,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single document from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -523,11 +997,55 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document"
+                        }
                     }
                 }
             }
         },
         "/enrollments": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all enrollments from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Enrollment"
+                ],
+                "summary": "Get all enrollments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -535,6 +1053,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes an enrollment JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -559,6 +1080,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment"
+                        }
                     }
                 }
             }
@@ -571,6 +1104,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the enrollment whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -593,6 +1129,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
                     }
                 }
             },
@@ -602,7 +1150,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single enrollment whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single enrollment whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -624,7 +1175,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment"
                         }
                     }
                 ],
@@ -632,7 +1183,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment"
                         }
                     }
                 }
@@ -644,6 +1213,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single enrollment from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -663,6 +1235,18 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment"
+                        }
                     }
                 }
             }
@@ -727,146 +1311,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/grades": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Takes a grade JSON and stores in DB. Returns saved JSON.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Grade"
-                ],
-                "summary": "Create a new Grade",
-                "parameters": [
-                    {
-                        "description": "Grade JSON",
-                        "name": "grade",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade"
-                        }
-                    }
-                }
-            }
-        },
-        "/grades/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Returns the grade whose ID value matches the id.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Grade"
-                ],
-                "summary": "Get single grade by id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Read grade by id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateGrade"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Updates and returns a single grade whose ID value matches the id. New data must be passed in the body.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Grade"
-                ],
-                "summary": "Update single grade by id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Update grade by id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Grade JSON",
-                        "name": "grade",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Deletes a single grade from the repository based on id.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Grade"
-                ],
-                "summary": "Remove single grade by id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete grade by id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    }
-                }
-            }
-        },
         "/health": {
             "get": {
                 "description": "Use this for liveness probes or any other checks which only validate if the services is running.",
@@ -882,6 +1326,38 @@ const docTemplate = `{
             }
         },
         "/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all notifications from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Get all notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -889,6 +1365,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes a notification JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -913,6 +1392,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification"
+                        }
                     }
                 }
             }
@@ -925,6 +1416,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the notification whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -947,6 +1441,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
                     }
                 }
             },
@@ -956,7 +1462,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single notification whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single notification whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -978,7 +1487,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateNotification"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateNotification"
                         }
                     }
                 ],
@@ -986,7 +1495,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification"
                         }
                     }
                 }
@@ -998,6 +1525,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single notification from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1017,11 +1547,55 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification"
+                        }
                     }
                 }
             }
         },
         "/submissions": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all submissions from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Submission"
+                ],
+                "summary": "Get all submissions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -1029,6 +1603,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Takes a submission JSON and stores in DB. Returns saved JSON.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1053,6 +1630,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission"
+                        }
                     }
                 }
             }
@@ -1065,6 +1654,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns the submission whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1087,6 +1679,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
                     }
                 }
             },
@@ -1096,7 +1700,10 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Updates and returns a single submission whose ID value matches the id. New data must be passed in the body.",
+                "description": "Updates and returns a single submission whose ID value matches the id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1118,7 +1725,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateSubmission"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission"
                         }
                     }
                 ],
@@ -1126,7 +1733,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission"
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission"
                         }
                     }
                 }
@@ -1138,6 +1763,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Deletes a single submission from the repository based on id.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1157,6 +1785,18 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission"
+                        }
                     }
                 }
             }
@@ -1456,28 +2096,121 @@ const docTemplate = `{
             "type": "object",
             "additionalProperties": {}
         },
+        "github_com_hoangtu1372k2_vms_internal_model.Assignment": {
+            "type": "object",
+            "properties": {
+                "attachment_document_id": {
+                    "type": "string"
+                },
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "due_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.Course": {
+            "type": "object",
+            "properties": {
+                "cover_image_document_id": {
+                    "description": "ID ảnh bìa (tham chiếu đến Document, có thể null)",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "Thời gian tạo khóa học",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Mô tả chi tiết (có thể null)",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "teacher_id": {
+                    "description": "ID của giáo viên (tham chiếu đến User)",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "Tiêu đề khóa học",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Thời gian cập nhật gần nhất",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.CourseMaterial": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "document_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uploaded_by_id": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_hoangtu1372k2_vms_internal_model.CreateAssignment": {
             "type": "object",
             "required": [
-                "CourseID",
-                "CreatedBy",
-                "DueDate",
-                "Title"
+                "course_id",
+                "created_by_id",
+                "due_date",
+                "title"
             ],
             "properties": {
-                "CourseID": {
-                    "type": "integer"
-                },
-                "CreatedBy": {
-                    "type": "integer"
-                },
-                "Description": {
+                "attachment_document_id": {
                     "type": "string"
                 },
-                "DueDate": {
+                "course_id": {
                     "type": "string"
                 },
-                "Title": {
+                "created_by_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "due_date": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
@@ -1485,17 +2218,46 @@ const docTemplate = `{
         "github_com_hoangtu1372k2_vms_internal_model.CreateCourse": {
             "type": "object",
             "required": [
-                "TeacherID",
-                "Title"
+                "teacher_id",
+                "title"
             ],
             "properties": {
-                "Description": {
+                "cover_image_document_id": {
                     "type": "string"
                 },
-                "TeacherID": {
-                    "type": "integer"
+                "description": {
+                    "type": "string"
                 },
-                "Title": {
+                "teacher_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial": {
+            "type": "object",
+            "required": [
+                "course_id",
+                "document_id",
+                "title",
+                "uploaded_by_id"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "document_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uploaded_by_id": {
                     "type": "string"
                 }
             }
@@ -1503,146 +2265,130 @@ const docTemplate = `{
         "github_com_hoangtu1372k2_vms_internal_model.CreateDocument": {
             "type": "object",
             "required": [
-                "CourseID",
-                "FileType",
-                "FileURL",
-                "Title",
-                "UploadedBy"
+                "file_path",
+                "file_size",
+                "mime_type",
+                "original_file_name",
+                "uploader_id"
             ],
             "properties": {
-                "CourseID": {
-                    "type": "integer"
-                },
-                "FileType": {
-                    "type": "string",
-                    "enum": [
-                        "pdf",
-                        "video",
-                        "image"
-                    ]
-                },
-                "FileURL": {
+                "file_path": {
                     "type": "string"
                 },
-                "Title": {
+                "file_size": {
+                    "type": "integer"
+                },
+                "mime_type": {
                     "type": "string"
                 },
-                "UploadedBy": {
-                    "type": "integer"
+                "original_file_name": {
+                    "type": "string"
+                },
+                "uploader_id": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment": {
             "type": "object",
             "required": [
-                "CourseID",
-                "UserID"
+                "course_id",
+                "user_id"
             ],
             "properties": {
-                "CourseID": {
-                    "type": "integer"
-                },
-                "UserID": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_hoangtu1372k2_vms_internal_model.CreateGrade": {
-            "type": "object",
-            "required": [
-                "GradedBy",
-                "Score",
-                "SubmissionID"
-            ],
-            "properties": {
-                "Feedback": {
+                "course_id": {
                     "type": "string"
                 },
-                "GradedBy": {
-                    "type": "integer"
+                "teacher_id": {
+                    "type": "string"
                 },
-                "Score": {
-                    "type": "number",
-                    "maximum": 100,
-                    "minimum": 0
-                },
-                "SubmissionID": {
-                    "type": "integer"
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.CreateNotification": {
             "type": "object",
             "required": [
-                "Content",
-                "Type",
-                "UserID"
+                "message",
+                "notification_type",
+                "priority",
+                "user_id"
             ],
             "properties": {
-                "Content": {
+                "link": {
                     "type": "string"
                 },
-                "IsRead": {
-                    "type": "boolean"
+                "message": {
+                    "type": "string"
                 },
-                "Type": {
-                    "type": "string",
-                    "enum": [
-                        "assignment",
-                        "grade",
-                        "course",
-                        "system"
-                    ]
+                "notification_type": {
+                    "type": "string"
                 },
-                "UserID": {
-                    "type": "integer"
+                "priority": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.CreateSubmission": {
             "type": "object",
             "required": [
-                "AssignmentID",
-                "UserID"
+                "assignment_id",
+                "student_id"
             ],
             "properties": {
-                "AssignmentID": {
-                    "type": "integer"
-                },
-                "FileURL": {
+                "assignment_id": {
                     "type": "string"
                 },
-                "TextContent": {
+                "student_id": {
                     "type": "string"
                 },
-                "UserID": {
-                    "type": "integer"
+                "submission_content": {
+                    "type": "string"
+                },
+                "submission_document_id": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.CreateUser": {
             "type": "object",
             "required": [
-                "Email",
-                "FullName",
-                "Password",
-                "Role",
-                "Username"
+                "email",
+                "full_name",
+                "password",
+                "role"
             ],
             "properties": {
-                "AvatarURL": {
+                "address": {
                     "type": "string"
                 },
-                "Email": {
+                "bio": {
                     "type": "string"
                 },
-                "FullName": {
+                "date_of_birth": {
                     "type": "string"
                 },
-                "Password": {
+                "email": {
                     "type": "string"
                 },
-                "Role": {
+                "full_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Changed from password_hash since this is raw password",
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "profile_picture_url": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string",
                     "enum": [
                         "student",
@@ -1650,13 +2396,179 @@ const docTemplate = `{
                         "admin"
                     ]
                 },
-                "TelegramID": {
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.Document": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "Thời gian tải lên",
                     "type": "string"
                 },
-                "UserID": {
+                "file_path": {
+                    "description": "Đường dẫn tới file (URL)",
                     "type": "string"
                 },
-                "Username": {
+                "file_size": {
+                    "description": "Kích thước file (bytes)",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "ID duy nhất của file",
+                    "type": "string"
+                },
+                "mime_type": {
+                    "description": "Kiểu MIME của file",
+                    "type": "string"
+                },
+                "original_file_name": {
+                    "description": "Tên file gốc",
+                    "type": "string"
+                },
+                "uploader_id": {
+                    "description": "ID người đã tải file lên (tham chiếu đến User)",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.Enrollment": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "enrollment_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "teacher_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateDocument"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateNotification"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission"
+                    }
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -1672,6 +2584,48 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateUser"
                     }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Assignment"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Course"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CourseMaterial"
                 },
                 "message": {
                     "type": "string"
@@ -1706,6 +2660,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument": {
             "type": "object",
             "properties": {
@@ -1728,20 +2696,6 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade"
                 },
                 "message": {
                     "type": "string"
@@ -1790,6 +2744,62 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Document"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Enrollment"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Notification"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.Submission"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment": {
             "type": "object",
             "properties": {
@@ -1818,6 +2828,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument": {
             "type": "object",
             "properties": {
@@ -1840,20 +2864,6 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateGrade": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateGrade"
                 },
                 "message": {
                     "type": "string"
@@ -1916,195 +2926,240 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment": {
+        "github_com_hoangtu1372k2_vms_internal_model.Notification": {
             "type": "object",
             "properties": {
-                "AssignmentID": {
-                    "type": "integer"
-                },
-                "CourseID": {
-                    "type": "integer"
-                },
-                "CreatedAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "CreatedBy": {
-                    "type": "integer"
-                },
-                "Description": {
+                "id": {
                     "type": "string"
                 },
-                "DueDate": {
+                "is_read": {
+                    "type": "boolean"
+                },
+                "link": {
                     "type": "string"
                 },
-                "Title": {
+                "message": {
+                    "type": "string"
+                },
+                "notification_type": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.Submission": {
+            "type": "object",
+            "properties": {
+                "assignment_id": {
+                    "type": "string"
+                },
+                "feedback": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "number"
+                },
+                "graded_at": {
+                    "type": "string"
+                },
+                "graded_by_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "student_id": {
+                    "type": "string"
+                },
+                "submission_content": {
+                    "type": "string"
+                },
+                "submission_document_id": {
+                    "type": "string"
+                },
+                "submitted_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment": {
+            "type": "object",
+            "required": [
+                "course_id",
+                "due_date",
+                "title"
+            ],
+            "properties": {
+                "attachment_document_id": {
+                    "type": "string"
+                },
+                "course_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "due_date": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateCourse": {
             "type": "object",
+            "required": [
+                "teacher_id",
+                "title"
+            ],
             "properties": {
-                "CourseID": {
-                    "type": "integer"
-                },
-                "CreatedAt": {
+                "cover_image_document_id": {
                     "type": "string"
                 },
-                "Description": {
+                "description": {
                     "type": "string"
                 },
-                "TeacherID": {
-                    "type": "integer"
-                },
-                "Title": {
+                "teacher_id": {
                     "type": "string"
                 },
-                "UpdatedAt": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateDocument": {
             "type": "object",
+            "required": [
+                "file_path",
+                "file_size",
+                "mime_type",
+                "original_file_name"
+            ],
             "properties": {
-                "CourseID": {
+                "file_path": {
+                    "type": "string"
+                },
+                "file_size": {
                     "type": "integer"
                 },
-                "DocumentID": {
-                    "type": "integer"
-                },
-                "FileType": {
+                "mime_type": {
                     "type": "string"
                 },
-                "FileURL": {
+                "original_file_name": {
                     "type": "string"
-                },
-                "Title": {
-                    "type": "string"
-                },
-                "UploadedAt": {
-                    "type": "string"
-                },
-                "UploadedBy": {
-                    "type": "integer"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment": {
             "type": "object",
             "properties": {
-                "CourseID": {
-                    "type": "integer"
-                },
-                "EnrolledAt": {
+                "teacher_id": {
                     "type": "string"
-                },
-                "EnrollmentID": {
-                    "type": "integer"
-                },
-                "UserID": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_hoangtu1372k2_vms_internal_model.UpdateGrade": {
-            "type": "object",
-            "properties": {
-                "Feedback": {
-                    "type": "string"
-                },
-                "GradeID": {
-                    "type": "integer"
-                },
-                "GradedAt": {
-                    "type": "string"
-                },
-                "GradedBy": {
-                    "type": "integer"
-                },
-                "Score": {
-                    "type": "number"
-                },
-                "SubmissionID": {
-                    "type": "integer"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateNotification": {
             "type": "object",
+            "required": [
+                "message",
+                "notification_type",
+                "priority"
+            ],
             "properties": {
-                "Content": {
-                    "type": "string"
-                },
-                "CreatedAt": {
-                    "type": "string"
-                },
-                "IsRead": {
+                "is_read": {
                     "type": "boolean"
                 },
-                "NotificationID": {
-                    "type": "integer"
-                },
-                "Type": {
+                "link": {
                     "type": "string"
                 },
-                "UserID": {
-                    "type": "integer"
+                "message": {
+                    "type": "string"
+                },
+                "notification_type": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission": {
             "type": "object",
             "properties": {
-                "AssignmentID": {
-                    "type": "integer"
-                },
-                "FileURL": {
+                "feedback": {
                     "type": "string"
                 },
-                "SubmissionID": {
-                    "type": "integer"
+                "grade": {
+                    "type": "number"
                 },
-                "SubmittedAt": {
+                "graded_by_id": {
                     "type": "string"
                 },
-                "TextContent": {
+                "submission_content": {
                     "type": "string"
                 },
-                "UserID": {
-                    "type": "integer"
+                "submission_document_id": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.UpdateUser": {
             "type": "object",
             "properties": {
-                "AvatarURL": {
+                "address": {
                     "type": "string"
                 },
-                "CreatedAt": {
+                "bio": {
                     "type": "string"
                 },
-                "Email": {
+                "created_at": {
                     "type": "string"
                 },
-                "FullName": {
+                "date_of_birth": {
                     "type": "string"
                 },
-                "Role": {
+                "email": {
                     "type": "string"
                 },
-                "TelegramID": {
+                "full_name": {
                     "type": "string"
                 },
-                "UpdatedAt": {
+                "phone_number": {
                     "type": "string"
                 },
-                "UserID": {
+                "profile_picture_url": {
                     "type": "string"
                 },
-                "Username": {
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -2112,34 +3167,42 @@ const docTemplate = `{
         "github_com_hoangtu1372k2_vms_internal_model.User": {
             "type": "object",
             "properties": {
-                "AvatarURL": {
+                "address": {
                     "type": "string"
                 },
-                "CreatedAt": {
+                "bio": {
                     "type": "string"
                 },
-                "Email": {
+                "created_at": {
                     "type": "string"
                 },
-                "FullName": {
+                "date_of_birth": {
+                    "description": "Sử dụng time.Time cho DATE có thể NULL",
                     "type": "string"
                 },
-                "Password": {
+                "email": {
                     "type": "string"
                 },
-                "Role": {
+                "full_name": {
                     "type": "string"
                 },
-                "TelegramID": {
+                "password_hash": {
                     "type": "string"
                 },
-                "UpdatedAt": {
+                "phone_number": {
                     "type": "string"
                 },
-                "UserID": {
+                "profile_picture_url": {
                     "type": "string"
                 },
-                "Username": {
+                "role": {
+                    "description": "'student', 'teacher', 'admin'",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -2153,38 +3216,6 @@ const docTemplate = `{
             "properties": {
                 "password": {
                     "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "internal_auth.RegisterRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "fullname",
-                "password",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "fullname": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string",
-                    "enum": [
-                        "student",
-                        "teacher",
-                        "admin"
-                    ]
                 },
                 "username": {
                     "type": "string"

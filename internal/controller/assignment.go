@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,9 +14,12 @@ import (
 // @Summary      Create a new Assignment
 // @Description  Takes an assignment JSON and stores in DB. Returns saved JSON.
 // @Tags         Assignment
+// @Accept       json
 // @Produce      json
 // @Param        assignment  body  model.CreateAssignment  true  "Assignment JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.CreateAssignment]
+// @Failure      400  {object}  model.JsonDTORsp[model.CreateAssignment]
+// @Failure      500  {object}  model.JsonDTORsp[model.CreateAssignment]
 // @Router       /assignments [post]
 // @Security     BearerAuth
 func CreateAssignment(c *gin.Context) {
@@ -41,20 +45,23 @@ func CreateAssignment(c *gin.Context) {
 	c.JSON(http.StatusCreated, &jsonRsp)
 }
 
-// ReadAssignment godoc
+// GetAssignmentByID godoc
 // @Summary      Get single assignment by id
 // @Description  Returns the assignment whose ID value matches the id.
 // @Tags         Assignment
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Read assignment by id"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateAssignment]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateAssignment]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateAssignment]
 // @Router       /assignments/{id} [get]
 // @Security     BearerAuth
-func ReadAssignment(c *gin.Context) {
+func GetAssignmentByID(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[model.UpdateAssignment]()
 	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateAssignment, model.Assignment](c.Param("id"))
 	if err != nil {
-		jsonRsp.Code = statuscode.StatusUpdateItemFailed
+		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusNotFound, &jsonRsp)
 		return
@@ -63,30 +70,60 @@ func ReadAssignment(c *gin.Context) {
 	c.JSON(http.StatusOK, &jsonRsp)
 }
 
+// GetAssignments godoc
+// @Summary      Get all assignments
+// @Description  Returns all assignments from the database.
+// @Tags         Assignment
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateAssignment]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateAssignment]
+// @Router       /assignments [get]
+// @Security     BearerAuth
+func GetAssignments(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.UpdateAssignment]()
+
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateAssignment, model.Assignment]("")
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}
+
 // UpdateAssignment godoc
 // @Summary      Update single assignment by id
-// @Description  Updates and returns a single assignment whose ID value matches the id. New data must be passed in the body.
+// @Description  Updates and returns a single assignment whose ID value matches the id.
 // @Tags         Assignment
+// @Accept       json
 // @Produce      json
-// @Param        id  path  string  true  "Update assignment by id"
-// @Param        assignment  body  model.CreateAssignment  true  "Assignment JSON"
-// @Success      200  {object}  model.JsonDTORsp[model.CreateAssignment]
+// @Param        id   path  string  true  "Update assignment by id"
+// @Param        assignment body  model.UpdateAssignment  true  "Assignment JSON"
+// @Success      200  {object}  model.JsonDTORsp[model.UpdateAssignment]
+// @Failure      400  {object}  model.JsonDTORsp[model.UpdateAssignment]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateAssignment]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateAssignment]
 // @Router       /assignments/{id} [put]
 // @Security     BearerAuth
 func UpdateAssignment(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[model.CreateAssignment]()
+	jsonRsp := model.NewJsonDTORsp[model.UpdateAssignment]()
 
-	var dto model.CreateAssignment
+	var dto model.UpdateAssignment
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		jsonRsp.Code = http.StatusBadRequest
+		jsonRsp.Code = statuscode.StatusBindingInputJsonFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, &jsonRsp)
 		return
 	}
 
-	dto, err := reposity.UpdateItemByIDFromDTO[model.CreateAssignment, model.Assignment](c.Param("id"), dto)
+	dto, err := reposity.UpdateItemByIDFromDTO[model.UpdateAssignment, model.Assignment](c.Param("id"), dto)
 	if err != nil {
-		jsonRsp.Code = http.StatusInternalServerError
+		jsonRsp.Code = statuscode.StatusUpdateItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusInternalServerError, &jsonRsp)
 		return
@@ -100,9 +137,12 @@ func UpdateAssignment(c *gin.Context) {
 // @Summary      Remove single assignment by id
 // @Description  Deletes a single assignment from the repository based on id.
 // @Tags         Assignment
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Delete assignment by id"
-// @Success      204
+// @Success      204  "No Content"
+// @Failure      404  {object}  model.JsonDTORsp[model.Assignment]
+// @Failure      500  {object}  model.JsonDTORsp[model.Assignment]
 // @Router       /assignments/{id} [delete]
 // @Security     BearerAuth
 func DeleteAssignment(c *gin.Context) {

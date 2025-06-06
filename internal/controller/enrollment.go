@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,9 +14,12 @@ import (
 // @Summary      Create a new Enrollment
 // @Description  Takes an enrollment JSON and stores in DB. Returns saved JSON.
 // @Tags         Enrollment
+// @Accept       json
 // @Produce      json
 // @Param        enrollment  body  model.CreateEnrollment  true  "Enrollment JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.CreateEnrollment]
+// @Failure      400  {object}  model.JsonDTORsp[model.CreateEnrollment]
+// @Failure      500  {object}  model.JsonDTORsp[model.CreateEnrollment]
 // @Router       /enrollments [post]
 // @Security     BearerAuth
 func CreateEnrollment(c *gin.Context) {
@@ -41,20 +45,23 @@ func CreateEnrollment(c *gin.Context) {
 	c.JSON(http.StatusCreated, &jsonRsp)
 }
 
-// ReadEnrollment godoc
+// GetEnrollmentByID godoc
 // @Summary      Get single enrollment by id
 // @Description  Returns the enrollment whose ID value matches the id.
 // @Tags         Enrollment
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Read enrollment by id"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateEnrollment]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateEnrollment]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateEnrollment]
 // @Router       /enrollments/{id} [get]
 // @Security     BearerAuth
-func ReadEnrollment(c *gin.Context) {
+func GetEnrollmentByID(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[model.UpdateEnrollment]()
 	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateEnrollment, model.Enrollment](c.Param("id"))
 	if err != nil {
-		jsonRsp.Code = statuscode.StatusUpdateItemFailed
+		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusNotFound, &jsonRsp)
 		return
@@ -63,30 +70,60 @@ func ReadEnrollment(c *gin.Context) {
 	c.JSON(http.StatusOK, &jsonRsp)
 }
 
+// GetEnrollments godoc
+// @Summary      Get all enrollments
+// @Description  Returns all enrollments from the database.
+// @Tags         Enrollment
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateEnrollment]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateEnrollment]
+// @Router       /enrollments [get]
+// @Security     BearerAuth
+func GetEnrollments(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.UpdateEnrollment]()
+
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateEnrollment, model.Enrollment]("")
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}
+
 // UpdateEnrollment godoc
 // @Summary      Update single enrollment by id
-// @Description  Updates and returns a single enrollment whose ID value matches the id. New data must be passed in the body.
+// @Description  Updates and returns a single enrollment whose ID value matches the id.
 // @Tags         Enrollment
+// @Accept       json
 // @Produce      json
-// @Param        id  path  string  true  "Update enrollment by id"
-// @Param        enrollment  body  model.CreateEnrollment  true  "Enrollment JSON"
-// @Success      200  {object}  model.JsonDTORsp[model.CreateEnrollment]
+// @Param        id   path  string  true  "Update enrollment by id"
+// @Param        enrollment body  model.UpdateEnrollment  true  "Enrollment JSON"
+// @Success      200  {object}  model.JsonDTORsp[model.UpdateEnrollment]
+// @Failure      400  {object}  model.JsonDTORsp[model.UpdateEnrollment]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateEnrollment]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateEnrollment]
 // @Router       /enrollments/{id} [put]
 // @Security     BearerAuth
 func UpdateEnrollment(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[model.CreateEnrollment]()
+	jsonRsp := model.NewJsonDTORsp[model.UpdateEnrollment]()
 
-	var dto model.CreateEnrollment
+	var dto model.UpdateEnrollment
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		jsonRsp.Code = http.StatusBadRequest
+		jsonRsp.Code = statuscode.StatusBindingInputJsonFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, &jsonRsp)
 		return
 	}
 
-	dto, err := reposity.UpdateItemByIDFromDTO[model.CreateEnrollment, model.Enrollment](c.Param("id"), dto)
+	dto, err := reposity.UpdateItemByIDFromDTO[model.UpdateEnrollment, model.Enrollment](c.Param("id"), dto)
 	if err != nil {
-		jsonRsp.Code = http.StatusInternalServerError
+		jsonRsp.Code = statuscode.StatusUpdateItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusInternalServerError, &jsonRsp)
 		return
@@ -100,9 +137,12 @@ func UpdateEnrollment(c *gin.Context) {
 // @Summary      Remove single enrollment by id
 // @Description  Deletes a single enrollment from the repository based on id.
 // @Tags         Enrollment
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Delete enrollment by id"
-// @Success      204
+// @Success      204  "No Content"
+// @Failure      404  {object}  model.JsonDTORsp[model.Enrollment]
+// @Failure      500  {object}  model.JsonDTORsp[model.Enrollment]
 // @Router       /enrollments/{id} [delete]
 // @Security     BearerAuth
 func DeleteEnrollment(c *gin.Context) {

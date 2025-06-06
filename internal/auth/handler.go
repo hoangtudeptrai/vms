@@ -43,32 +43,6 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, token)
 }
 
-// Register godoc
-// @Summary      User registration
-// @Description  Register a new user
-// @Tags         Auth
-// @Accept       json
-// @Produce      json
-// @Param        request body RegisterRequest true "Registration details"
-// @Success      201  {object}  gin.H
-// @Failure      400  {object}  gin.H
-// @Failure      500  {object}  gin.H
-// @Router       /auth/register [post]
-func (h *Handler) Register(c *gin.Context) {
-	var req RegisterRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if err := h.service.Register(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
-}
-
 // AuthMiddleware validates JWT tokens
 func (h *Handler) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {

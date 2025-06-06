@@ -40,7 +40,7 @@ func main() {
 	cfg.SetDefault("sql_host", "localhost")
 	cfg.SetDefault("sql_port", 5432)
 	cfg.SetDefault("sql_sslmode", "disable")
-	cfg.SetDefault("sql_dbname", "LMS")
+	cfg.SetDefault("sql_dbname", "DoAnLMS")
 	cfg.SetDefault("sql_user", "postgres")
 	cfg.SetDefault("sql_password", "123")
 	cfg.SetDefault("sql_schema", "public")

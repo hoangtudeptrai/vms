@@ -92,11 +92,11 @@ func Run(c *viper.Viper) error {
 				&model.User{},
 				&model.Course{},
 				&model.Enrollment{},
-				&model.Document{},
 				&model.Assignment{},
-				&model.Submission{},
-				&model.Grade{},
+				&model.Document{},
 				&model.Notification{},
+				&model.Submission{},
+				&model.CourseMaterial{},
 			)
 			if err != nil {
 				panic("Failed to AutoMigrate table! err: " + err.Error())
@@ -161,28 +161,61 @@ func Run(c *viper.Viper) error {
 			apiV0.GET("/debug/pprof/block", gin.WrapH(pprof.Handler("block")))
 		}
 
-		// Auth routes (không yêu cầu xác thực)
-		apiV0.POST("/auth/login", authHandler.Login)
-		apiV0.POST("/auth/register", authHandler.Register)
+		apiV0.POST("/auth/login", handleWrapper(authHandler.Login, false))
 
-		// Public user routes (không yêu cầu xác thực)
+		// User routes
 		apiV0.GET("/users", handleWrapper(controllers.Get, false))
 		apiV0.POST("/users", handleWrapper(controllers.CreateUser, false))
-
-		// Protected routes (yêu cầu xác thực)
-		// protected := apiV0.Group("")
-		// protected.Use(authHandler.AuthMiddleware())
-		// {
-		// User management
 		apiV0.GET("/users/:id", handleWrapper(controllers.GetUserByID, true))
 		apiV0.PUT("/users/:id", handleWrapper(controllers.UpdateUser, true))
 		apiV0.DELETE("/users/:id", handleWrapper(controllers.DeleteUser, true))
 
-		// Other protected endpoints
+		// Course routes
+		apiV0.POST("/courses", handleWrapper(controllers.CreateCourse, true))
+		apiV0.GET("/courses", handleWrapper(controllers.GetCourses, true))
+		apiV0.GET("/courses/:id", handleWrapper(controllers.GetCourseByID, true))
+		apiV0.PUT("/courses/:id", handleWrapper(controllers.UpdateCourse, true))
+		apiV0.DELETE("/courses/:id", handleWrapper(controllers.DeleteCourse, true))
+
+		// Enrollment routes
+		apiV0.POST("/enrollments", handleWrapper(controllers.CreateEnrollment, true))
+		apiV0.GET("/enrollments", handleWrapper(controllers.GetEnrollments, true))
+		apiV0.GET("/enrollments/:id", handleWrapper(controllers.GetEnrollmentByID, true))
+		apiV0.PUT("/enrollments/:id", handleWrapper(controllers.UpdateEnrollment, true))
+		apiV0.DELETE("/enrollments/:id", handleWrapper(controllers.DeleteEnrollment, true))
+
+		// Assignment routes
+		apiV0.POST("/assignments", handleWrapper(controllers.CreateAssignment, true))
+		apiV0.GET("/assignments", handleWrapper(controllers.GetAssignments, true))
+		apiV0.GET("/assignments/:id", handleWrapper(controllers.GetAssignmentByID, true))
+		apiV0.PUT("/assignments/:id", handleWrapper(controllers.UpdateAssignment, true))
+		apiV0.DELETE("/assignments/:id", handleWrapper(controllers.DeleteAssignment, true))
+
+		// Document routes
+		apiV0.POST("/documents", handleWrapper(controllers.CreateDocument, true))
+		apiV0.GET("/documents", handleWrapper(controllers.GetDocuments, true))
+		apiV0.GET("/documents/:id", handleWrapper(controllers.GetDocumentByID, true))
+		apiV0.PUT("/documents/:id", handleWrapper(controllers.UpdateDocument, true))
+		apiV0.DELETE("/documents/:id", handleWrapper(controllers.DeleteDocument, true))
+
+		// Notification routes
+		apiV0.POST("/notifications", handleWrapper(controllers.CreateNotification, true))
+		apiV0.GET("/notifications", handleWrapper(controllers.GetNotifications, true))
+		apiV0.GET("/notifications/:id", handleWrapper(controllers.GetNotificationByID, true))
+		apiV0.PUT("/notifications/:id", handleWrapper(controllers.UpdateNotification, true))
+		apiV0.DELETE("/notifications/:id", handleWrapper(controllers.DeleteNotification, true))
+
+		// Submission routes
+		apiV0.POST("/submissions", handleWrapper(controllers.CreateSubmission, true))
+		apiV0.GET("/submissions", handleWrapper(controllers.GetSubmissions, true))
+		apiV0.GET("/submissions/:id", handleWrapper(controllers.GetSubmissionByID, true))
+		apiV0.PUT("/submissions/:id", handleWrapper(controllers.UpdateSubmission, true))
+		apiV0.DELETE("/submissions/:id", handleWrapper(controllers.DeleteSubmission, true))
+
+		// Other utility routes
 		apiV0.GET("/health", handleWrapper(controllers.Health, true))
 		apiV0.POST("/upload", handleWrapper(controllers.UploadFile, true))
 		apiV0.GET("/file", handleWrapper(controllers.GetFile, true))
-		// }
 
 		srv = &http.Server{
 			Addr:    cfg.GetString("listen_addr"),

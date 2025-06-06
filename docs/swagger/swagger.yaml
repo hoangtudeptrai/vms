@@ -2,148 +2,328 @@ definitions:
   gin.H:
     additionalProperties: {}
     type: object
+  github_com_hoangtu1372k2_vms_internal_model.Assignment:
+    properties:
+      attachment_document_id:
+        type: string
+      course_id:
+        type: string
+      created_at:
+        type: string
+      created_by_id:
+        type: string
+      description:
+        type: string
+      due_date:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.Course:
+    properties:
+      cover_image_document_id:
+        description: ID ảnh bìa (tham chiếu đến Document, có thể null)
+        type: string
+      created_at:
+        description: Thời gian tạo khóa học
+        type: string
+      description:
+        description: Mô tả chi tiết (có thể null)
+        type: string
+      id:
+        type: string
+      teacher_id:
+        description: ID của giáo viên (tham chiếu đến User)
+        type: string
+      title:
+        description: Tiêu đề khóa học
+        type: string
+      updated_at:
+        description: Thời gian cập nhật gần nhất
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.CourseMaterial:
+    properties:
+      course_id:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      document_id:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      uploaded_by_id:
+        type: string
+    type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateAssignment:
     properties:
-      CourseID:
-        type: integer
-      CreatedBy:
-        type: integer
-      Description:
+      attachment_document_id:
         type: string
-      DueDate:
+      course_id:
         type: string
-      Title:
+      created_by_id:
+        type: string
+      description:
+        type: string
+      due_date:
+        type: string
+      title:
         type: string
     required:
-    - CourseID
-    - CreatedBy
-    - DueDate
-    - Title
+    - course_id
+    - created_by_id
+    - due_date
+    - title
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateCourse:
     properties:
-      Description:
+      cover_image_document_id:
         type: string
-      TeacherID:
-        type: integer
-      Title:
+      description:
+        type: string
+      teacher_id:
+        type: string
+      title:
         type: string
     required:
-    - TeacherID
-    - Title
+    - teacher_id
+    - title
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial:
+    properties:
+      course_id:
+        type: string
+      description:
+        type: string
+      document_id:
+        type: string
+      title:
+        type: string
+      uploaded_by_id:
+        type: string
+    required:
+    - course_id
+    - document_id
+    - title
+    - uploaded_by_id
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateDocument:
     properties:
-      CourseID:
+      file_path:
+        type: string
+      file_size:
         type: integer
-      FileType:
-        enum:
-        - pdf
-        - video
-        - image
+      mime_type:
         type: string
-      FileURL:
+      original_file_name:
         type: string
-      Title:
+      uploader_id:
         type: string
-      UploadedBy:
-        type: integer
     required:
-    - CourseID
-    - FileType
-    - FileURL
-    - Title
-    - UploadedBy
+    - file_path
+    - file_size
+    - mime_type
+    - original_file_name
+    - uploader_id
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment:
     properties:
-      CourseID:
-        type: integer
-      UserID:
-        type: integer
-    required:
-    - CourseID
-    - UserID
-    type: object
-  github_com_hoangtu1372k2_vms_internal_model.CreateGrade:
-    properties:
-      Feedback:
+      course_id:
         type: string
-      GradedBy:
-        type: integer
-      Score:
-        maximum: 100
-        minimum: 0
-        type: number
-      SubmissionID:
-        type: integer
+      teacher_id:
+        type: string
+      user_id:
+        type: string
     required:
-    - GradedBy
-    - Score
-    - SubmissionID
+    - course_id
+    - user_id
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateNotification:
     properties:
-      Content:
+      link:
         type: string
-      IsRead:
-        type: boolean
-      Type:
-        enum:
-        - assignment
-        - grade
-        - course
-        - system
+      message:
         type: string
-      UserID:
-        type: integer
+      notification_type:
+        type: string
+      priority:
+        type: string
+      user_id:
+        type: string
     required:
-    - Content
-    - Type
-    - UserID
+    - message
+    - notification_type
+    - priority
+    - user_id
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateSubmission:
     properties:
-      AssignmentID:
-        type: integer
-      FileURL:
+      assignment_id:
         type: string
-      TextContent:
+      student_id:
         type: string
-      UserID:
-        type: integer
+      submission_content:
+        type: string
+      submission_document_id:
+        type: string
     required:
-    - AssignmentID
-    - UserID
+    - assignment_id
+    - student_id
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateUser:
     properties:
-      AvatarURL:
+      address:
         type: string
-      Email:
+      bio:
         type: string
-      FullName:
+      date_of_birth:
         type: string
-      Password:
+      email:
         type: string
-      Role:
+      full_name:
+        type: string
+      password:
+        description: Changed from password_hash since this is raw password
+        type: string
+      phone_number:
+        type: string
+      profile_picture_url:
+        type: string
+      role:
         enum:
         - student
         - teacher
         - admin
         type: string
-      TelegramID:
-        type: string
-      UserID:
-        type: string
-      Username:
+      user_id:
         type: string
     required:
-    - Email
-    - FullName
-    - Password
-    - Role
-    - Username
+    - email
+    - full_name
+    - password
+    - role
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.Document:
+    properties:
+      created_at:
+        description: Thời gian tải lên
+        type: string
+      file_path:
+        description: Đường dẫn tới file (URL)
+        type: string
+      file_size:
+        description: Kích thước file (bytes)
+        type: integer
+      id:
+        description: ID duy nhất của file
+        type: string
+      mime_type:
+        description: Kiểu MIME của file
+        type: string
+      original_file_name:
+        description: Tên file gốc
+        type: string
+      uploader_id:
+        description: ID người đã tải file lên (tham chiếu đến User)
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.Enrollment:
+    properties:
+      course_id:
+        type: string
+      enrollment_date:
+        type: string
+      id:
+        type: string
+      teacher_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourse'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateDocument'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateNotification'
+        type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission'
+        type: array
+      message:
+        type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateUser:
     properties:
@@ -153,6 +333,33 @@ definitions:
         items:
           $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateUser'
         type: array
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Assignment'
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Course'
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CourseMaterial'
       message:
         type: string
     type: object
@@ -174,6 +381,15 @@ definitions:
       message:
         type: string
     type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial'
+      message:
+        type: string
+    type: object
   github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument:
     properties:
       code:
@@ -189,15 +405,6 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment'
-      message:
-        type: string
-    type: object
-  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade'
       message:
         type: string
     type: object
@@ -228,6 +435,42 @@ definitions:
       message:
         type: string
     type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Document'
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Enrollment'
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Notification'
+      message:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.Submission'
+      message:
+        type: string
+    type: object
   github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment:
     properties:
       code:
@@ -246,6 +489,15 @@ definitions:
       message:
         type: string
     type: object
+  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial'
+      message:
+        type: string
+    type: object
   github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument:
     properties:
       code:
@@ -261,15 +513,6 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment'
-      message:
-        type: string
-    type: object
-  github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateGrade:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateGrade'
       message:
         type: string
     type: object
@@ -309,153 +552,191 @@ definitions:
       message:
         type: string
     type: object
+  github_com_hoangtu1372k2_vms_internal_model.Notification:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      is_read:
+        type: boolean
+      link:
+        type: string
+      message:
+        type: string
+      notification_type:
+        type: string
+      priority:
+        type: string
+      user_id:
+        type: string
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.Submission:
+    properties:
+      assignment_id:
+        type: string
+      feedback:
+        type: string
+      grade:
+        type: number
+      graded_at:
+        type: string
+      graded_by_id:
+        type: string
+      id:
+        type: string
+      student_id:
+        type: string
+      submission_content:
+        type: string
+      submission_document_id:
+        type: string
+      submitted_at:
+        type: string
+    type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment:
     properties:
-      AssignmentID:
-        type: integer
-      CourseID:
-        type: integer
-      CreatedAt:
+      attachment_document_id:
         type: string
-      CreatedBy:
-        type: integer
-      Description:
+      course_id:
         type: string
-      DueDate:
+      description:
         type: string
-      Title:
+      due_date:
         type: string
+      title:
+        type: string
+    required:
+    - course_id
+    - due_date
+    - title
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateCourse:
     properties:
-      CourseID:
-        type: integer
-      CreatedAt:
+      cover_image_document_id:
         type: string
-      Description:
+      description:
         type: string
-      TeacherID:
-        type: integer
-      Title:
+      teacher_id:
         type: string
-      UpdatedAt:
+      title:
         type: string
+    required:
+    - teacher_id
+    - title
+    type: object
+  github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    required:
+    - title
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateDocument:
     properties:
-      CourseID:
+      file_path:
+        type: string
+      file_size:
         type: integer
-      DocumentID:
-        type: integer
-      FileType:
+      mime_type:
         type: string
-      FileURL:
+      original_file_name:
         type: string
-      Title:
-        type: string
-      UploadedAt:
-        type: string
-      UploadedBy:
-        type: integer
+    required:
+    - file_path
+    - file_size
+    - mime_type
+    - original_file_name
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment:
     properties:
-      CourseID:
-        type: integer
-      EnrolledAt:
+      teacher_id:
         type: string
-      EnrollmentID:
-        type: integer
-      UserID:
-        type: integer
-    type: object
-  github_com_hoangtu1372k2_vms_internal_model.UpdateGrade:
-    properties:
-      Feedback:
-        type: string
-      GradeID:
-        type: integer
-      GradedAt:
-        type: string
-      GradedBy:
-        type: integer
-      Score:
-        type: number
-      SubmissionID:
-        type: integer
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateNotification:
     properties:
-      Content:
-        type: string
-      CreatedAt:
-        type: string
-      IsRead:
+      is_read:
         type: boolean
-      NotificationID:
-        type: integer
-      Type:
+      link:
         type: string
-      UserID:
-        type: integer
+      message:
+        type: string
+      notification_type:
+        type: string
+      priority:
+        type: string
+    required:
+    - message
+    - notification_type
+    - priority
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission:
     properties:
-      AssignmentID:
-        type: integer
-      FileURL:
+      feedback:
         type: string
-      SubmissionID:
-        type: integer
-      SubmittedAt:
+      grade:
+        type: number
+      graded_by_id:
         type: string
-      TextContent:
+      submission_content:
         type: string
-      UserID:
-        type: integer
+      submission_document_id:
+        type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateUser:
     properties:
-      AvatarURL:
+      address:
         type: string
-      CreatedAt:
+      bio:
         type: string
-      Email:
+      created_at:
         type: string
-      FullName:
+      date_of_birth:
         type: string
-      Role:
+      email:
         type: string
-      TelegramID:
+      full_name:
         type: string
-      UpdatedAt:
+      phone_number:
         type: string
-      UserID:
+      profile_picture_url:
         type: string
-      Username:
+      role:
+        type: string
+      updated_at:
+        type: string
+      user_id:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.User:
     properties:
-      AvatarURL:
+      address:
         type: string
-      CreatedAt:
+      bio:
         type: string
-      Email:
+      created_at:
         type: string
-      FullName:
+      date_of_birth:
+        description: Sử dụng time.Time cho DATE có thể NULL
         type: string
-      Password:
+      email:
         type: string
-      Role:
+      full_name:
         type: string
-      TelegramID:
+      password_hash:
         type: string
-      UpdatedAt:
+      phone_number:
         type: string
-      UserID:
+      profile_picture_url:
         type: string
-      Username:
+      role:
+        description: '''student'', ''teacher'', ''admin'''
+        type: string
+      updated_at:
+        type: string
+      user_id:
         type: string
     type: object
   internal_auth.LoginRequest:
@@ -466,29 +747,6 @@ definitions:
         type: string
     required:
     - password
-    - username
-    type: object
-  internal_auth.RegisterRequest:
-    properties:
-      email:
-        type: string
-      fullname:
-        type: string
-      password:
-        type: string
-      role:
-        enum:
-        - student
-        - teacher
-        - admin
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - fullname
-    - password
-    - role
     - username
     type: object
   internal_auth.TokenResponse:
@@ -504,7 +762,29 @@ info:
   contact: {}
 paths:
   /assignments:
+    get:
+      consumes:
+      - application/json
+      description: Returns all assignments from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+      security:
+      - BearerAuth: []
+      summary: Get all assignments
+      tags:
+      - Assignment
     post:
+      consumes:
+      - application/json
       description: Takes an assignment JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Assignment JSON
@@ -520,6 +800,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment'
       security:
       - BearerAuth: []
       summary: Create a new Assignment
@@ -527,6 +815,8 @@ paths:
       - Assignment
   /assignments/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single assignment from the repository based on id.
       parameters:
       - description: Delete assignment by id
@@ -539,12 +829,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Assignment'
       security:
       - BearerAuth: []
       summary: Remove single assignment by id
       tags:
       - Assignment
     get:
+      consumes:
+      - application/json
       description: Returns the assignment whose ID value matches the id.
       parameters:
       - description: Read assignment by id
@@ -559,14 +859,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
       security:
       - BearerAuth: []
       summary: Get single assignment by id
       tags:
       - Assignment
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single assignment whose ID value matches
-        the id. New data must be passed in the body.
+        the id.
       parameters:
       - description: Update assignment by id
         in: path
@@ -578,14 +888,26 @@ paths:
         name: assignment
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateAssignment'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateAssignment'
       security:
       - BearerAuth: []
       summary: Update single assignment by id
@@ -621,38 +943,182 @@ paths:
       summary: User login
       tags:
       - Auth
-  /auth/register:
-    post:
+  /course-materials:
+    get:
       consumes:
       - application/json
-      description: Register a new user
-      parameters:
-      - description: Registration details
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/internal_auth.RegisterRequest'
+      description: Returns all course materials from the database.
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/gin.H'
-      summary: User registration
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+      security:
+      - BearerAuth: []
+      summary: Get all course materials
       tags:
-      - Auth
-  /courses:
+      - CourseMaterial
     post:
+      consumes:
+      - application/json
+      description: Takes a course material JSON and stores in DB. Returns saved JSON.
+      parameters:
+      - description: Course Material JSON
+        in: body
+        name: material
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourseMaterial'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourseMaterial'
+      security:
+      - BearerAuth: []
+      summary: Create a new Course Material
+      tags:
+      - CourseMaterial
+  /course-materials/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a single course material from the repository based on id.
+      parameters:
+      - description: Delete course material by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CourseMaterial'
+      security:
+      - BearerAuth: []
+      summary: Remove single course material by id
+      tags:
+      - CourseMaterial
+    get:
+      consumes:
+      - application/json
+      description: Returns the course material whose ID value matches the id.
+      parameters:
+      - description: Read course material by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+      security:
+      - BearerAuth: []
+      summary: Get single course material by id
+      tags:
+      - CourseMaterial
+    put:
+      consumes:
+      - application/json
+      description: Updates and returns a single course material whose ID value matches
+        the id.
+      parameters:
+      - description: Update course material by id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Course Material JSON
+        in: body
+        name: material
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourseMaterial'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourseMaterial'
+      security:
+      - BearerAuth: []
+      summary: Update single course material by id
+      tags:
+      - CourseMaterial
+  /courses:
+    get:
+      consumes:
+      - application/json
+      description: Returns all courses from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+      security:
+      - BearerAuth: []
+      summary: Get all courses
+      tags:
+      - Course
+    post:
+      consumes:
+      - application/json
       description: Takes a course JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Course JSON
@@ -668,6 +1134,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse'
       security:
       - BearerAuth: []
       summary: Create a new Course
@@ -675,6 +1149,8 @@ paths:
       - Course
   /courses/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single course from the repository based on id.
       parameters:
       - description: Delete course by id
@@ -687,12 +1163,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Course'
       security:
       - BearerAuth: []
       summary: Remove single course by id
       tags:
       - Course
     get:
+      consumes:
+      - application/json
       description: Returns the course whose ID value matches the id.
       parameters:
       - description: Read course by id
@@ -707,14 +1193,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
       security:
       - BearerAuth: []
       summary: Get single course by id
       tags:
       - Course
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single course whose ID value matches the
-        id. New data must be passed in the body.
+        id.
       parameters:
       - description: Update course by id
         in: path
@@ -726,21 +1222,55 @@ paths:
         name: course
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateCourse'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateCourse'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateCourse'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateCourse'
       security:
       - BearerAuth: []
       summary: Update single course by id
       tags:
       - Course
   /documents:
+    get:
+      consumes:
+      - application/json
+      description: Returns all documents from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+      security:
+      - BearerAuth: []
+      summary: Get all documents
+      tags:
+      - Document
     post:
+      consumes:
+      - application/json
       description: Takes a document JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Document JSON
@@ -756,6 +1286,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument'
       security:
       - BearerAuth: []
       summary: Create a new Document
@@ -763,6 +1301,8 @@ paths:
       - Document
   /documents/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single document from the repository based on id.
       parameters:
       - description: Delete document by id
@@ -775,12 +1315,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Document'
       security:
       - BearerAuth: []
       summary: Remove single document by id
       tags:
       - Document
     get:
+      consumes:
+      - application/json
       description: Returns the document whose ID value matches the id.
       parameters:
       - description: Read document by id
@@ -795,14 +1345,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
       security:
       - BearerAuth: []
       summary: Get single document by id
       tags:
       - Document
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single document whose ID value matches the
-        id. New data must be passed in the body.
+        id.
       parameters:
       - description: Update document by id
         in: path
@@ -814,21 +1374,55 @@ paths:
         name: document
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateDocument'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateDocument'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateDocument'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateDocument'
       security:
       - BearerAuth: []
       summary: Update single document by id
       tags:
       - Document
   /enrollments:
+    get:
+      consumes:
+      - application/json
+      description: Returns all enrollments from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+      security:
+      - BearerAuth: []
+      summary: Get all enrollments
+      tags:
+      - Enrollment
     post:
+      consumes:
+      - application/json
       description: Takes an enrollment JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Enrollment JSON
@@ -844,6 +1438,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment'
       security:
       - BearerAuth: []
       summary: Create a new Enrollment
@@ -851,6 +1453,8 @@ paths:
       - Enrollment
   /enrollments/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single enrollment from the repository based on id.
       parameters:
       - description: Delete enrollment by id
@@ -863,12 +1467,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Enrollment'
       security:
       - BearerAuth: []
       summary: Remove single enrollment by id
       tags:
       - Enrollment
     get:
+      consumes:
+      - application/json
       description: Returns the enrollment whose ID value matches the id.
       parameters:
       - description: Read enrollment by id
@@ -883,14 +1497,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
       security:
       - BearerAuth: []
       summary: Get single enrollment by id
       tags:
       - Enrollment
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single enrollment whose ID value matches
-        the id. New data must be passed in the body.
+        the id.
       parameters:
       - description: Update enrollment by id
         in: path
@@ -902,14 +1526,26 @@ paths:
         name: enrollment
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateEnrollment'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateEnrollment'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateEnrollment'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateEnrollment'
       security:
       - BearerAuth: []
       summary: Update single enrollment by id
@@ -956,94 +1592,6 @@ paths:
       summary: Lấy tệp từ MinIO
       tags:
       - minio
-  /grades:
-    post:
-      description: Takes a grade JSON and stores in DB. Returns saved JSON.
-      parameters:
-      - description: Grade JSON
-        in: body
-        name: grade
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade'
-      security:
-      - BearerAuth: []
-      summary: Create a new Grade
-      tags:
-      - Grade
-  /grades/{id}:
-    delete:
-      description: Deletes a single grade from the repository based on id.
-      parameters:
-      - description: Delete grade by id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-      security:
-      - BearerAuth: []
-      summary: Remove single grade by id
-      tags:
-      - Grade
-    get:
-      description: Returns the grade whose ID value matches the id.
-      parameters:
-      - description: Read grade by id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateGrade'
-      security:
-      - BearerAuth: []
-      summary: Get single grade by id
-      tags:
-      - Grade
-    put:
-      description: Updates and returns a single grade whose ID value matches the id.
-        New data must be passed in the body.
-      parameters:
-      - description: Update grade by id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Grade JSON
-        in: body
-        name: grade
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateGrade'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateGrade'
-      security:
-      - BearerAuth: []
-      summary: Update single grade by id
-      tags:
-      - Grade
   /health:
     get:
       description: Use this for liveness probes or any other checks which only validate
@@ -1055,7 +1603,29 @@ paths:
       tags:
       - healthcheck
   /notifications:
+    get:
+      consumes:
+      - application/json
+      description: Returns all notifications from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+      security:
+      - BearerAuth: []
+      summary: Get all notifications
+      tags:
+      - Notification
     post:
+      consumes:
+      - application/json
       description: Takes a notification JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Notification JSON
@@ -1071,6 +1641,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification'
       security:
       - BearerAuth: []
       summary: Create a new Notification
@@ -1078,6 +1656,8 @@ paths:
       - Notification
   /notifications/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single notification from the repository based on id.
       parameters:
       - description: Delete notification by id
@@ -1090,12 +1670,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Notification'
       security:
       - BearerAuth: []
       summary: Remove single notification by id
       tags:
       - Notification
     get:
+      consumes:
+      - application/json
       description: Returns the notification whose ID value matches the id.
       parameters:
       - description: Read notification by id
@@ -1110,14 +1700,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
       security:
       - BearerAuth: []
       summary: Get single notification by id
       tags:
       - Notification
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single notification whose ID value matches
-        the id. New data must be passed in the body.
+        the id.
       parameters:
       - description: Update notification by id
         in: path
@@ -1129,21 +1729,55 @@ paths:
         name: notification
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateNotification'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateNotification'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateNotification'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateNotification'
       security:
       - BearerAuth: []
       summary: Update single notification by id
       tags:
       - Notification
   /submissions:
+    get:
+      consumes:
+      - application/json
+      description: Returns all submissions from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+      security:
+      - BearerAuth: []
+      summary: Get all submissions
+      tags:
+      - Submission
     post:
+      consumes:
+      - application/json
       description: Takes a submission JSON and stores in DB. Returns saved JSON.
       parameters:
       - description: Submission JSON
@@ -1159,6 +1793,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission'
       security:
       - BearerAuth: []
       summary: Create a new Submission
@@ -1166,6 +1808,8 @@ paths:
       - Submission
   /submissions/{id}:
     delete:
+      consumes:
+      - application/json
       description: Deletes a single submission from the repository based on id.
       parameters:
       - description: Delete submission by id
@@ -1178,12 +1822,22 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_Submission'
       security:
       - BearerAuth: []
       summary: Remove single submission by id
       tags:
       - Submission
     get:
+      consumes:
+      - application/json
       description: Returns the submission whose ID value matches the id.
       parameters:
       - description: Read submission by id
@@ -1198,14 +1852,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
       security:
       - BearerAuth: []
       summary: Get single submission by id
       tags:
       - Submission
     put:
+      consumes:
+      - application/json
       description: Updates and returns a single submission whose ID value matches
-        the id. New data must be passed in the body.
+        the id.
       parameters:
       - description: Update submission by id
         in: path
@@ -1217,14 +1881,26 @@ paths:
         name: submission
         required: true
         schema:
-          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.CreateSubmission'
+          $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.UpdateSubmission'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateSubmission'
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateSubmission'
       security:
       - BearerAuth: []
       summary: Update single submission by id

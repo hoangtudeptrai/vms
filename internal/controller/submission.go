@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,9 +14,12 @@ import (
 // @Summary      Create a new Submission
 // @Description  Takes a submission JSON and stores in DB. Returns saved JSON.
 // @Tags         Submission
+// @Accept       json
 // @Produce      json
 // @Param        submission  body  model.CreateSubmission  true  "Submission JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.CreateSubmission]
+// @Failure      400  {object}  model.JsonDTORsp[model.CreateSubmission]
+// @Failure      500  {object}  model.JsonDTORsp[model.CreateSubmission]
 // @Router       /submissions [post]
 // @Security     BearerAuth
 func CreateSubmission(c *gin.Context) {
@@ -41,20 +45,23 @@ func CreateSubmission(c *gin.Context) {
 	c.JSON(http.StatusCreated, &jsonRsp)
 }
 
-// ReadSubmission godoc
+// GetSubmissionByID godoc
 // @Summary      Get single submission by id
 // @Description  Returns the submission whose ID value matches the id.
 // @Tags         Submission
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Read submission by id"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateSubmission]
 // @Router       /submissions/{id} [get]
 // @Security     BearerAuth
-func ReadSubmission(c *gin.Context) {
+func GetSubmissionByID(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[model.UpdateSubmission]()
 	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateSubmission, model.Submission](c.Param("id"))
 	if err != nil {
-		jsonRsp.Code = statuscode.StatusUpdateItemFailed
+		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusNotFound, &jsonRsp)
 		return
@@ -63,30 +70,60 @@ func ReadSubmission(c *gin.Context) {
 	c.JSON(http.StatusOK, &jsonRsp)
 }
 
+// GetSubmissions godoc
+// @Summary      Get all submissions
+// @Description  Returns all submissions from the database.
+// @Tags         Submission
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateSubmission]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateSubmission]
+// @Router       /submissions [get]
+// @Security     BearerAuth
+func GetSubmissions(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.UpdateSubmission]()
+
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateSubmission, model.Submission]("")
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}
+
 // UpdateSubmission godoc
 // @Summary      Update single submission by id
-// @Description  Updates and returns a single submission whose ID value matches the id. New data must be passed in the body.
+// @Description  Updates and returns a single submission whose ID value matches the id.
 // @Tags         Submission
+// @Accept       json
 // @Produce      json
-// @Param        id  path  string  true  "Update submission by id"
-// @Param        submission  body  model.CreateSubmission  true  "Submission JSON"
-// @Success      200  {object}  model.JsonDTORsp[model.CreateSubmission]
+// @Param        id   path  string  true  "Update submission by id"
+// @Param        submission body  model.UpdateSubmission  true  "Submission JSON"
+// @Success      200  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Failure      400  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Failure      404  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateSubmission]
 // @Router       /submissions/{id} [put]
 // @Security     BearerAuth
 func UpdateSubmission(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[model.CreateSubmission]()
+	jsonRsp := model.NewJsonDTORsp[model.UpdateSubmission]()
 
-	var dto model.CreateSubmission
+	var dto model.UpdateSubmission
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		jsonRsp.Code = http.StatusBadRequest
+		jsonRsp.Code = statuscode.StatusBindingInputJsonFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, &jsonRsp)
 		return
 	}
 
-	dto, err := reposity.UpdateItemByIDFromDTO[model.CreateSubmission, model.Submission](c.Param("id"), dto)
+	dto, err := reposity.UpdateItemByIDFromDTO[model.UpdateSubmission, model.Submission](c.Param("id"), dto)
 	if err != nil {
-		jsonRsp.Code = http.StatusInternalServerError
+		jsonRsp.Code = statuscode.StatusUpdateItemFailed
 		jsonRsp.Message = err.Error()
 		c.JSON(http.StatusInternalServerError, &jsonRsp)
 		return
@@ -100,9 +137,12 @@ func UpdateSubmission(c *gin.Context) {
 // @Summary      Remove single submission by id
 // @Description  Deletes a single submission from the repository based on id.
 // @Tags         Submission
+// @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Delete submission by id"
-// @Success      204
+// @Success      204  "No Content"
+// @Failure      404  {object}  model.JsonDTORsp[model.Submission]
+// @Failure      500  {object}  model.JsonDTORsp[model.Submission]
 // @Router       /submissions/{id} [delete]
 // @Security     BearerAuth
 func DeleteSubmission(c *gin.Context) {

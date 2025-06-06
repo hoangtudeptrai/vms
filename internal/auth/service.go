@@ -18,7 +18,7 @@ type Service struct {
 }
 
 func (s *Service) Login(req *LoginRequest) (*TokenResponse, error) {
-	dto, err := reposity.ReadItemWithFilterIntoDTO[model.CreateUser, model.User]("username= ?", req.Username)
+	dto, err := reposity.ReadItemWithFilterIntoDTO[model.CreateUser, model.User]("full_name= ?", req.Username)
 	if err != nil {
 		return nil, errors.New("invalid credentials username")
 	}
@@ -29,7 +29,8 @@ func (s *Service) Login(req *LoginRequest) (*TokenResponse, error) {
 	// Generate JWT token
 	claims := jwt.MapClaims{
 		"user_id":  dto.UserID,
-		"username": dto.Username,
+		"username": dto.FullName,
+		"email":    dto.Email,
 		"role":     dto.Role,
 		"exp":      time.Now().Add(s.ExpireTime).Unix(),
 	}
@@ -45,35 +46,6 @@ func (s *Service) Login(req *LoginRequest) (*TokenResponse, error) {
 		ExpiresIn: int64(s.ExpireTime.Seconds()),
 		TokenType: "Bearer",
 	}, nil
-}
-
-func (s *Service) Register(req *RegisterRequest) error {
-	// Check if username already exists
-	var existingUser model.CreateUser
-	if err := s.DB.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
-		return errors.New("username already exists")
-	}
-
-	// Hash password
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-
-	// Create new user
-	user := model.CreateUser{
-		Username: req.Username,
-		Password: string(hashedPassword),
-		Email:    req.Email,
-		FullName: req.FullName,
-		Role:     req.Role,
-	}
-
-	if err := s.DB.Create(&user).Error; err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *Service) ValidateToken(tokenString string) (*jwt.Token, error) {
