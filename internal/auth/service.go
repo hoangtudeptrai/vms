@@ -18,7 +18,7 @@ type Service struct {
 }
 
 func (s *Service) Login(req *LoginRequest) (*TokenResponse, error) {
-	dto, err := reposity.ReadItemWithFilterIntoDTO[model.CreateUser, model.User]("full_name= ?", req.Username)
+	dto, err := reposity.ReadItemWithFilterIntoDTO[model.CreateUser, model.User]("user_name= ?", req.Username)
 	if err != nil {
 		return nil, errors.New("invalid credentials username")
 	}
@@ -28,7 +28,7 @@ func (s *Service) Login(req *LoginRequest) (*TokenResponse, error) {
 
 	// Generate JWT token
 	claims := jwt.MapClaims{
-		"user_id":  dto.UserID,
+		"id":       dto.ID,
 		"username": dto.FullName,
 		"email":    dto.Email,
 		"role":     dto.Role,

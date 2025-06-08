@@ -12,4 +12,6 @@ const (
 	StatusItemNotFound           = 1006
 	StatusServerError            = 1007
 	StatusAuthenticationFailed   = 1008
+	StatusUnauthorized           = 401
+	StatusInternalServerError    = 500
 )

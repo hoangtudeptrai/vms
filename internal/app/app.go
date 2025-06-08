@@ -169,6 +169,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/users/:id", handleWrapper(controllers.GetUserByID, true))
 		apiV0.PUT("/users/:id", handleWrapper(controllers.UpdateUser, true))
 		apiV0.DELETE("/users/:id", handleWrapper(controllers.DeleteUser, true))
+		apiV0.GET("/users/me", handleWrapper(controllers.GetCurrentUser, false))
 
 		// Course routes
 		apiV0.POST("/courses", handleWrapper(controllers.CreateCourse, true))

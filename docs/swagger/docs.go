@@ -1935,6 +1935,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns the user information based on the provided token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get current user information from token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser"
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "security": [
@@ -2378,8 +2427,11 @@ const docTemplate = `{
                 "full_name": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "string"
+                },
                 "password": {
-                    "description": "Changed from password_hash since this is raw password",
+                    "description": "Changed from password since this is raw password",
                     "type": "string"
                 },
                 "phone_number": {
@@ -2396,7 +2448,7 @@ const docTemplate = `{
                         "admin"
                     ]
                 },
-                "user_id": {
+                "user_name": {
                     "type": "string"
                 }
             }
@@ -3147,6 +3199,9 @@ const docTemplate = `{
                 "full_name": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "string"
+                },
                 "phone_number": {
                     "type": "string"
                 },
@@ -3159,7 +3214,7 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
+                "user_name": {
                     "type": "string"
                 }
             }
@@ -3186,7 +3241,10 @@ const docTemplate = `{
                 "full_name": {
                     "type": "string"
                 },
-                "password_hash": {
+                "id": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "phone_number": {
@@ -3202,7 +3260,7 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
+                "user_name": {
                     "type": "string"
                 }
             }

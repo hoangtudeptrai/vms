@@ -8,9 +8,10 @@ import (
 
 // User is the base model for users
 type User struct {
-	UserID            uuid.UUID `json:"user_id" db:"user_id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
-	FullName          string    `json:"full_name" db:"full_name"`
+	ID                uuid.UUID `json:"id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
 	Email             string    `json:"email" db:"email"`
+	FullName          string    `json:"full_name" db:"full_name"`
+	UserName          string    `json:"user_name" db:"user_name"`
 	Password          string    `json:"password" db:"password"`
 	Role              string    `json:"role" db:"role"` // 'student', 'teacher', 'admin'
 	ProfilePictureURL string    `json:"profile_picture_url,omitempty" db:"profile_picture_url"`
@@ -24,8 +25,9 @@ type User struct {
 
 // CreateUser DTO for creating a new User
 type CreateUser struct {
-	UserID            uuid.UUID `json:"user_id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
+	ID                uuid.UUID `json:"id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
 	FullName          string    `json:"full_name" binding:"required"`
+	UserName          string    `json:"user_name"`
 	Email             string    `json:"email" binding:"required,email"`
 	Password          string    `json:"password" binding:"required"` // Changed from password since this is raw password
 	Role              string    `json:"role" binding:"required,oneof=student teacher admin"`
@@ -38,8 +40,9 @@ type CreateUser struct {
 
 // UpdateUser DTO for updating an existing User
 type UpdateUser struct {
-	UserID            uuid.UUID `json:"user_id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
+	ID                uuid.UUID `json:"id" gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
 	FullName          string    `json:"full_name"`
+	UserName          string    `json:"user_name"`
 	Email             string    `json:"email"`
 	Role              string    `json:"role"`
 	ProfilePictureURL string    `json:"profile_picture_url,omitempty"`

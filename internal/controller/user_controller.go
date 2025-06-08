@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"github.com/hoangtu1372k2/common-go/reposity"
+	"github.com/hoangtu1372k2/vms/internal/config"
 	"github.com/hoangtu1372k2/vms/internal/model"
 	"github.com/hoangtu1372k2/vms/pkg/statuscode"
 	"golang.org/x/crypto/bcrypt"
@@ -89,9 +91,9 @@ func GetUserByID(c *gin.Context) {
 // @Router       /users [get]
 // @Security     BearerAuth
 func Get(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[[]model.UpdateUser]()
+	jsonRsp := model.NewJsonDTORsp[[]model.User]()
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateUser, model.User]("")
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.User, model.User]("")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -165,4 +167,63 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNoContent, &jsonRsp)
+}
+
+// GetCurrentUser godoc
+// @Summary      Get current user information from token
+// @Description  Returns the user information based on the provided token
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Param        token  query  string  true  "JWT token"
+// @Success      200  {object}  model.JsonDTORsp[model.UpdateUser]
+// @Failure      401  {object}  model.JsonDTORsp[model.UpdateUser]
+// @Failure      500  {object}  model.JsonDTORsp[model.UpdateUser]
+// @Router       /users/me [get]
+// @Security     BearerAuth
+func GetCurrentUser(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[model.UpdateUser]()
+
+	// Get token from query parameter
+	token := c.Query("token")
+	if token == "" {
+		jsonRsp.Code = statuscode.StatusUnauthorized
+		jsonRsp.Message = "Token is required"
+		c.JSON(http.StatusUnauthorized, &jsonRsp)
+		return
+	}
+
+	// Parse and validate token
+	claims := jwt.MapClaims{}
+	parsedToken, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(config.GetConfig().JWT.Secret), nil
+	})
+
+	if err != nil || !parsedToken.Valid {
+		jsonRsp.Code = statuscode.StatusUnauthorized
+		jsonRsp.Message = "Invalid token"
+		c.JSON(http.StatusUnauthorized, &jsonRsp)
+		return
+	}
+
+	// Get user ID from token claims
+	userID, ok := claims["id"].(string)
+	if !ok {
+		jsonRsp.Code = statuscode.StatusInternalServerError
+		jsonRsp.Message = "Invalid user ID in token"
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	// Get user information
+	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateUser, model.User](userID)
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	jsonRsp.Data = dto
+	c.JSON(http.StatusOK, &jsonRsp)
 }

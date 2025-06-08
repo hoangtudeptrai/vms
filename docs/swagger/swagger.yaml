@@ -190,8 +190,10 @@ definitions:
         type: string
       full_name:
         type: string
+      id:
+        type: string
       password:
-        description: Changed from password_hash since this is raw password
+        description: Changed from password since this is raw password
         type: string
       phone_number:
         type: string
@@ -203,7 +205,7 @@ definitions:
         - teacher
         - admin
         type: string
-      user_id:
+      user_name:
         type: string
     required:
     - email
@@ -699,6 +701,8 @@ definitions:
         type: string
       full_name:
         type: string
+      id:
+        type: string
       phone_number:
         type: string
       profile_picture_url:
@@ -707,7 +711,7 @@ definitions:
         type: string
       updated_at:
         type: string
-      user_id:
+      user_name:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.User:
@@ -725,7 +729,9 @@ definitions:
         type: string
       full_name:
         type: string
-      password_hash:
+      id:
+        type: string
+      password:
         type: string
       phone_number:
         type: string
@@ -736,7 +742,7 @@ definitions:
         type: string
       updated_at:
         type: string
-      user_id:
+      user_name:
         type: string
     type: object
   internal_auth.LoginRequest:
@@ -2091,6 +2097,37 @@ paths:
       security:
       - BearerAuth: []
       summary: Update single user by id
+      tags:
+      - User
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      description: Returns the user information based on the provided token
+      parameters:
+      - description: JWT token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_UpdateUser'
+      security:
+      - BearerAuth: []
+      summary: Get current user information from token
       tags:
       - User
 securityDefinitions:
