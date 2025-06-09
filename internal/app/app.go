@@ -194,7 +194,7 @@ func Run(c *viper.Viper) error {
 
 		// Document routes
 		apiV0.POST("/documents", handleWrapper(controllers.CreateDocument, true))
-		apiV0.GET("/documents", handleWrapper(controllers.GetDocuments, true))
+		apiV0.GET("/documents", handleWrapper(controllers.GetDocuments, false))
 		apiV0.GET("/documents/:id", handleWrapper(controllers.GetDocumentByID, true))
 		apiV0.PUT("/documents/:id", handleWrapper(controllers.UpdateDocument, true))
 		apiV0.DELETE("/documents/:id", handleWrapper(controllers.DeleteDocument, true))
@@ -214,9 +214,9 @@ func Run(c *viper.Viper) error {
 		apiV0.DELETE("/submissions/:id", handleWrapper(controllers.DeleteSubmission, true))
 
 		// Other utility routes
-		apiV0.GET("/health", handleWrapper(controllers.Health, true))
-		apiV0.POST("/upload", handleWrapper(controllers.UploadFile, true))
-		apiV0.GET("/file", handleWrapper(controllers.GetFile, true))
+		apiV0.GET("/health", handleWrapper(controllers.Health, false))
+		apiV0.POST("/upload", handleWrapper(controllers.UploadFile, false))
+		apiV0.GET("/file", handleWrapper(controllers.GetFile, false))
 
 		srv = &http.Server{
 			Addr:    cfg.GetString("listen_addr"),

@@ -1253,7 +1253,7 @@ const docTemplate = `{
         },
         "/file": {
             "get": {
-                "description": "Lấy tệp từ bucket 'media' của MinIO hoặc trả về URL đã ký trước để truy cập tệp. Yêu cầu tên object của tệp.",
+                "description": "Lấy tệp từ bucket 'lms' của MinIO hoặc trả về URL đã ký trước để truy cập tệp. Yêu cầu tên object của tệp.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1803,7 +1803,7 @@ const docTemplate = `{
         },
         "/upload": {
             "post": {
-                "description": "Tải file lên bucket 'media' của MinIO. Định dạng hỗ trợ: JPG, PNG, MP4, PDF, DOC, DOCX, XLS, XLSX.",
+                "description": "Tải file lên bucket 'lms' của MinIO. Định dạng hỗ trợ: JPG, PNG, MP4, PDF, DOC, DOCX, XLS, XLSX.",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -1820,6 +1820,13 @@ const docTemplate = `{
                         "description": "File cần tải lên",
                         "name": "file",
                         "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Read user by id",
+                        "name": "id_user",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -2326,6 +2333,10 @@ const docTemplate = `{
                 },
                 "file_size": {
                     "type": "integer"
+                },
+                "id": {
+                    "description": "ID duy nhất của file",
+                    "type": "string"
                 },
                 "mime_type": {
                     "type": "string"
@@ -3116,6 +3127,10 @@ const docTemplate = `{
                 },
                 "file_size": {
                     "type": "integer"
+                },
+                "id": {
+                    "description": "ID duy nhất của file",
+                    "type": "string"
                 },
                 "mime_type": {
                     "type": "string"

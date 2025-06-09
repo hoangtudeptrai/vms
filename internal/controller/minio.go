@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hoangtu1372k2/common-go/reposity"
+	"github.com/hoangtu1372k2/vms/internal/model"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
@@ -47,7 +49,7 @@ func InitMinIO() error {
 	log.Printf("Kết nối thành công tới MinIO server, tìm thấy %d bucket", len(buckets))
 
 	// Kiểm tra bucket tồn tại, tạo nếu chưa có
-	bucketName := "media"
+	bucketName := "lms"
 	exists, err := minioClient.BucketExists(ctx, bucketName)
 	if err != nil {
 		log.Printf("Lỗi kiểm tra bucket: %v", err)
@@ -67,11 +69,12 @@ func InitMinIO() error {
 
 // UploadFile godoc
 // @Summary      Tải file lên MinIO
-// @Description  Tải file lên bucket 'media' của MinIO. Định dạng hỗ trợ: JPG, PNG, MP4, PDF, DOC, DOCX, XLS, XLSX.
+// @Description  Tải file lên bucket 'lms' của MinIO. Định dạng hỗ trợ: JPG, PNG, MP4, PDF, DOC, DOCX, XLS, XLSX.
 // @Tags         minio
 // @Accept       multipart/form-data
 // @Produce      json
 // @Param        file formData file true "File cần tải lên"
+// @Param        id_user  query  string  true  "Read user by id"
 // @Success      200 {object} map[string]interface{} "Tải file thành công"
 // @Failure      400 {object} map[string]string "File hoặc yêu cầu không hợp lệ"
 // @Failure      500 {object} map[string]string "Lỗi server"
@@ -136,7 +139,7 @@ func UploadFile(c *gin.Context) {
 	objectName := fmt.Sprintf("%s/%s", folder, file.Filename)
 
 	// Tải lên MinIO
-	bucketName := "media"
+	bucketName := "lms"
 	ctx := context.Background()
 	info, err := minioClient.PutObject(ctx, bucketName, objectName, f, file.Size, minio.PutObjectOptions{
 		ContentType: contentType,
@@ -149,17 +152,27 @@ func UploadFile(c *gin.Context) {
 
 	// Trả về phản hồi thành công
 	log.Printf("Tải file %s thành công, kích thước: %d bytes", objectName, info.Size)
-	c.JSON(http.StatusOK, gin.H{
-		"message":    "Tải file thành công",
-		"objectName": objectName,
-		"size":       info.Size,
-		"url":        fmt.Sprintf("http://%s/%s/%s", minioClient.EndpointURL().Host, bucketName, objectName),
-	})
+
+	var dto model.CreateDocument
+	dto.UploaderID = c.Query("id_user")
+	dto.OriginalFileName = objectName
+	dto.FilePath = fmt.Sprintf("http://%s/%s/%s", minioClient.EndpointURL().Host, bucketName, objectName)
+	dto.MimeType = contentType
+	dto.FileSize = info.Size
+
+	data, err := reposity.CreateItemFromDTO[model.CreateDocument, model.Document](dto)
+	if err != nil {
+		log.Printf("Lỗi tạo document: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Lỗi tạo document: %v", err)})
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
 }
 
 // GetFile godoc
 // @Summary      Lấy tệp từ MinIO
-// @Description  Lấy tệp từ bucket 'media' của MinIO hoặc trả về URL đã ký trước để truy cập tệp. Yêu cầu tên object của tệp.
+// @Description  Lấy tệp từ bucket 'lms' của MinIO hoặc trả về URL đã ký trước để truy cập tệp. Yêu cầu tên object của tệp.
 // @Tags         minio
 // @Accept       json
 // @Produce      json
@@ -186,7 +199,7 @@ func GetFile(c *gin.Context) {
 	}
 
 	// Kiểm tra tệp tồn tại trong bucket
-	bucketName := "media"
+	bucketName := "lms"
 	ctx := context.Background()
 	_, err := minioClient.StatObject(ctx, bucketName, objectName, minio.StatObjectOptions{})
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 // Notification struct remains unchanged by this refactoring.
 // Struct Notification không thay đổi trong lần tái cấu trúc này.
 type Notification struct {
-	ID               uuid.UUID `json:"id" db:"notification_id"`
+	ID               uuid.UUID `json:"id"  gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
 	UserID           uuid.UUID `json:"user_id" db:"user_id"`
 	Message          string    `json:"message" db:"message"`
 	Link             *string   `json:"link,omitempty" db:"link"`
