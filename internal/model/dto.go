@@ -106,9 +106,9 @@ type CreateNotification struct {
 
 // CourseEnrollment DTOs
 type CreateCourseEnrollment struct {
-	StudentID string `json:"student_id" binding:"required"`
-	CourseID  string `json:"course_id" binding:"required"`
-	Status    string `json:"status" binding:"required,oneof=enrolled pending dropped completed"`
+	StudentID uuid.UUID `json:"student_id" binding:"required"`
+	CourseID  uuid.UUID `json:"course_id" binding:"required"`
+	Status    string    `json:"status" binding:"required,oneof=enrolled pending dropped completed"`
 }
 
 type UpdateCourseEnrollment struct {
@@ -117,11 +117,11 @@ type UpdateCourseEnrollment struct {
 
 // Grade DTOs
 type CreateGrade struct {
-	StudentID    string  `json:"student_id" binding:"required"`
-	AssignmentID string  `json:"assignment_id" binding:"required"`
-	CourseID     string  `json:"course_id" binding:"required"`
-	Score        float64 `json:"score" binding:"required,min=0,max=100"`
-	Feedback     string  `json:"feedback"`
+	StudentID    uuid.UUID `json:"student_id" binding:"required"`
+	AssignmentID uuid.UUID `json:"assignment_id" binding:"required"`
+	CourseID     uuid.UUID `json:"course_id" binding:"required"`
+	Score        float64   `json:"score" binding:"required,min=0,max=100"`
+	Feedback     string    `json:"feedback"`
 }
 
 type UpdateGrade struct {
@@ -131,10 +131,10 @@ type UpdateGrade struct {
 
 // Submission DTOs
 type CreateSubmission struct {
-	StudentID    string `json:"student_id" binding:"required"`
-	AssignmentID string `json:"assignment_id" binding:"required"`
-	Content      string `json:"content" binding:"required"`
-	FileURL      string `json:"file_url"`
+	StudentID    uuid.UUID `json:"student_id" binding:"required"`
+	AssignmentID uuid.UUID `json:"assignment_id" binding:"required"`
+	Content      string    `json:"content" binding:"required"`
+	FileURL      string    `json:"file_url"`
 }
 
 type UpdateSubmission struct {
@@ -145,9 +145,9 @@ type UpdateSubmission struct {
 
 // Comment DTOs
 type CreateComment struct {
-	UserID       string `json:"user_id" binding:"required"`
-	SubmissionID string `json:"submission_id" binding:"required"`
-	Content      string `json:"content" binding:"required"`
+	UserID       uuid.UUID `json:"user_id" binding:"required"`
+	SubmissionID uuid.UUID `json:"submission_id" binding:"required"`
+	Content      string    `json:"content" binding:"required"`
 }
 
 type UpdateComment struct {
@@ -156,14 +156,14 @@ type UpdateComment struct {
 
 // AssignmentDocument DTOs
 type CreateAssignmentDocument struct {
-	AssignmentID string  `json:"assignment_id" binding:"required"`
-	Title        string  `json:"title" binding:"required"`
-	Description  *string `json:"description"`
-	FileName     string  `json:"file_name" binding:"required"`
-	FilePath     string  `json:"file_path" binding:"required"`
-	FileSize     *int64  `json:"file_size"`
-	FileType     *string `json:"file_type"`
-	UploadedBy   string  `json:"uploaded_by" binding:"required"`
+	AssignmentID uuid.UUID `json:"assignment_id" binding:"required"`
+	Title        string    `json:"title" binding:"required"`
+	Description  *string   `json:"description"`
+	FileName     string    `json:"file_name" binding:"required"`
+	FilePath     string    `json:"file_path" binding:"required"`
+	FileSize     *int64    `json:"file_size"`
+	FileType     *string   `json:"file_type"`
+	UploadedBy   string    `json:"uploaded_by" binding:"required"`
 }
 
 type UpdateAssignmentDocument struct {
@@ -177,14 +177,14 @@ type UpdateAssignmentDocument struct {
 
 // CourseDocument DTOs
 type CreateCourseDocument struct {
-	CourseID    string  `json:"course_id" binding:"required"`
-	Title       string  `json:"title" binding:"required"`
-	Description *string `json:"description"`
-	FileName    string  `json:"file_name" binding:"required"`
-	FilePath    string  `json:"file_path" binding:"required"`
-	FileSize    *int64  `json:"file_size"`
-	FileType    *string `json:"file_type"`
-	UploadedBy  string  `json:"uploaded_by" binding:"required"`
+	CourseID    uuid.UUID `json:"course_id" binding:"required"`
+	Title       string    `json:"title" binding:"required"`
+	Description *string   `json:"description"`
+	FileName    string    `json:"file_name" binding:"required"`
+	FilePath    string    `json:"file_path" binding:"required"`
+	FileSize    *int64    `json:"file_size"`
+	FileType    *string   `json:"file_type"`
+	UploadedBy  string    `json:"uploaded_by" binding:"required"`
 }
 
 type UpdateCourseDocument struct {
@@ -198,11 +198,11 @@ type UpdateCourseDocument struct {
 
 // AssignmentSubmissionFile DTOs
 type CreateAssignmentSubmissionFile struct {
-	SubmissionID *string `json:"submission_id"`
-	FileName     string  `json:"file_name" binding:"required"`
-	FilePath     string  `json:"file_path" binding:"required"`
-	FileSize     *int64  `json:"file_size"`
-	FileType     *string `json:"file_type"`
+	SubmissionID uuid.UUID `json:"submission_id"`
+	FileName     string    `json:"file_name" binding:"required"`
+	FilePath     string    `json:"file_path" binding:"required"`
+	FileSize     *int64    `json:"file_size"`
+	FileType     *string   `json:"file_type"`
 }
 
 type UpdateAssignmentSubmissionFile struct {
@@ -214,12 +214,12 @@ type UpdateAssignmentSubmissionFile struct {
 
 // AssignmentSubmission DTOs
 type CreateAssignmentSubmission struct {
-	AssignmentID string   `json:"assignment_id" binding:"required"`
-	StudentID    string   `json:"student_id" binding:"required"`
-	Content      *string  `json:"content"`
-	Grade        *float64 `json:"grade" binding:"omitempty,min=0,max=10"`
-	Feedback     *string  `json:"feedback"`
-	Status       string   `json:"status" binding:"required,oneof=pending submitted graded"`
+	AssignmentID uuid.UUID `json:"assignment_id" binding:"required"`
+	StudentID    uuid.UUID `json:"student_id" binding:"required"`
+	Content      *string   `json:"content"`
+	Grade        *float64  `json:"grade" binding:"omitempty,min=0,max=10"`
+	Feedback     *string   `json:"feedback"`
+	Status       string    `json:"status" binding:"required,oneof=pending submitted graded"`
 }
 
 type UpdateAssignmentSubmission struct {

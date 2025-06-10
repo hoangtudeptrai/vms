@@ -182,13 +182,17 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/courses/:id", handleWrapper(controllers.GetCourseByID, false))
 		apiV0.PUT("/courses/:id", handleWrapper(controllers.UpdateCourse, false))
 		apiV0.DELETE("/courses/:id", handleWrapper(controllers.DeleteCourse, false))
+		apiV0.GET("/courses/instructor/:id", handleWrapper(controllers.GetCoursesByInstructor, false))
+		apiV0.GET("/courses/enrolled/:id", handleWrapper(controllers.GetEnrolledCourses, false))
 
 		// Course Enrollment routes
-		apiV0.GET("/course-enrollments", handleWrapper(controllers.GetCourseEnrollments, false))
-		apiV0.POST("/course-enrollments", handleWrapper(controllers.CreateCourseEnrollment, false))
-		apiV0.GET("/course-enrollments/:id", handleWrapper(controllers.GetCourseEnrollmentByID, false))
-		apiV0.PUT("/course-enrollments/:id", handleWrapper(controllers.UpdateCourseEnrollment, false))
-		apiV0.DELETE("/course-enrollments/:id", handleWrapper(controllers.DeleteCourseEnrollment, false))
+		apiV0.GET("/enrollments", handleWrapper(controllers.GetCourseEnrollments, false))
+		apiV0.POST("/enrollments", handleWrapper(controllers.CreateCourseEnrollment, false))
+		apiV0.GET("/enrollments/:id", handleWrapper(controllers.GetCourseEnrollmentByID, false))
+		apiV0.PUT("/enrollments/:id", handleWrapper(controllers.UpdateCourseEnrollment, false))
+		apiV0.DELETE("/enrollments/:id", handleWrapper(controllers.DeleteCourseEnrollment, false))
+		apiV0.GET("/enrollments/student/:id", handleWrapper(controllers.GetStudentEnrollments, false))
+		apiV0.GET("/enrollments/course/:id", handleWrapper(controllers.GetCourseEnrollmentsByCourse, false))
 
 		// Course Document routes
 		apiV0.GET("/course-documents", handleWrapper(controllers.GetCourseDocuments, false))
@@ -196,6 +200,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/course-documents/:id", handleWrapper(controllers.GetCourseDocumentByID, false))
 		apiV0.PUT("/course-documents/:id", handleWrapper(controllers.UpdateCourseDocument, false))
 		apiV0.DELETE("/course-documents/:id", handleWrapper(controllers.DeleteCourseDocument, false))
+		apiV0.GET("/course-documents/course/:id", handleWrapper(controllers.GetCourseDocumentsByCourse, false))
 
 		// Assignment routes
 		apiV0.GET("/assignments", handleWrapper(controllers.GetAssignments, false))
@@ -210,6 +215,8 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/assignment-submissions/:id", handleWrapper(controllers.GetAssignmentSubmissionByID, false))
 		apiV0.PUT("/assignment-submissions/:id", handleWrapper(controllers.UpdateAssignmentSubmission, false))
 		apiV0.DELETE("/assignment-submissions/:id", handleWrapper(controllers.DeleteAssignmentSubmission, false))
+		apiV0.GET("/assignment-submissions/assignment/:id", handleWrapper(controllers.GetAssignmentSubmissionsByAssignment, false))
+		apiV0.GET("/assignment-submissions/student/:id", handleWrapper(controllers.GetAssignmentSubmissionsByStudent, false))
 
 		// Assignment Submission File routes
 		apiV0.GET("/assignment-submission-files", handleWrapper(controllers.GetAssignmentSubmissionFiles, false))
@@ -217,6 +224,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/assignment-submission-files/:id", handleWrapper(controllers.GetAssignmentSubmissionFileByID, false))
 		apiV0.PUT("/assignment-submission-files/:id", handleWrapper(controllers.UpdateAssignmentSubmissionFile, false))
 		apiV0.DELETE("/assignment-submission-files/:id", handleWrapper(controllers.DeleteAssignmentSubmissionFile, false))
+		apiV0.GET("/assignment-submission-files/submission/:id", handleWrapper(controllers.GetAssignmentSubmissionFilesBySubmission, false))
 
 		// Assignment Document routes
 		apiV0.GET("/assignment-documents", handleWrapper(controllers.GetAssignmentDocuments, false))
@@ -224,6 +232,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/assignment-documents/:id", handleWrapper(controllers.GetAssignmentDocumentByID, false))
 		apiV0.PUT("/assignment-documents/:id", handleWrapper(controllers.UpdateAssignmentDocument, false))
 		apiV0.DELETE("/assignment-documents/:id", handleWrapper(controllers.DeleteAssignmentDocument, false))
+		apiV0.GET("/assignment-documents/assignment/:id", handleWrapper(controllers.GetAssignmentDocumentsByAssignment, false))
 
 		// Lesson routes
 		apiV0.GET("/lessons", handleWrapper(controllers.GetLessons, false))
@@ -231,6 +240,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/lessons/:id", handleWrapper(controllers.GetLessonByID, false))
 		apiV0.PUT("/lessons/:id", handleWrapper(controllers.UpdateLesson, false))
 		apiV0.DELETE("/lessons/:id", handleWrapper(controllers.DeleteLesson, false))
+		apiV0.GET("/lessons/course/:id", handleWrapper(controllers.GetLessonsByCourse, false))
 
 		// Comment routes
 		apiV0.GET("/comments", handleWrapper(controllers.GetComments, false))
@@ -238,6 +248,8 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/comments/:id", handleWrapper(controllers.GetCommentByID, false))
 		apiV0.PUT("/comments/:id", handleWrapper(controllers.UpdateComment, false))
 		apiV0.DELETE("/comments/:id", handleWrapper(controllers.DeleteComment, false))
+		apiV0.GET("/comments/user/:id", handleWrapper(controllers.GetUserComments, false))
+		apiV0.GET("/comments/submission/:id", handleWrapper(controllers.GetSubmissionComments, false))
 
 		// Grade routes
 		apiV0.GET("/grades", handleWrapper(controllers.GetGrades, false))
@@ -245,6 +257,9 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/grades/:id", handleWrapper(controllers.GetGradeByID, false))
 		apiV0.PUT("/grades/:id", handleWrapper(controllers.UpdateGrade, false))
 		apiV0.DELETE("/grades/:id", handleWrapper(controllers.DeleteGrade, false))
+		apiV0.GET("/grades/student/:id", handleWrapper(controllers.GetStudentGrades, false))
+		apiV0.GET("/grades/assignment/:id", handleWrapper(controllers.GetAssignmentGrades, false))
+		apiV0.GET("/grades/course/:id", handleWrapper(controllers.GetCourseGrades, false))
 
 		// Submission routes
 		apiV0.GET("/submissions", handleWrapper(controllers.GetSubmissions, false))
@@ -252,6 +267,8 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/submissions/:id", handleWrapper(controllers.GetSubmissionByID, false))
 		apiV0.PUT("/submissions/:id", handleWrapper(controllers.UpdateSubmission, false))
 		apiV0.DELETE("/submissions/:id", handleWrapper(controllers.DeleteSubmission, false))
+		apiV0.GET("/submissions/student/:id", handleWrapper(controllers.GetStudentSubmissions, false))
+		apiV0.GET("/submissions/latest/:student_id/:assignment_id", handleWrapper(controllers.GetLatestSubmission, false))
 
 		// Notification routes
 		apiV0.GET("/notifications", handleWrapper(controllers.GetNotifications, false))

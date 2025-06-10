@@ -4811,6 +4811,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "assignment_status": {
+                    "description": "gorm:\"default:'published';type:assignment_status\"",
                     "type": "string"
                 },
                 "course_id": {
@@ -4835,6 +4836,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
+                    "description": "gorm:\"default:'draft';type:text;check:status IN ('draft','active','completed')",
                     "type": "string"
                 },
                 "title": {
@@ -4896,12 +4898,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "grade": {
+                    "description": "gorm:\"check:grade \u003e= 0 AND grade \u003c= 10\"",
                     "type": "number"
                 },
                 "id": {
                     "type": "string"
                 },
                 "status": {
+                    "description": "gorm:\"default:'pending';type:submission_status\"",
                     "type": "string"
                 },
                 "student_id": {
@@ -5528,6 +5532,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "percentage": {
+                    "description": "gorm:\"default:round((score / max_score) * 100, 2)\"",
                     "type": "number"
                 },
                 "score": {
@@ -6533,13 +6538,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
+                    "description": "gorm:\"not null;default:'student';type:user_role\"",
                     "type": "string"
                 },
                 "specializations": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "description": "gorm:\"type:text[]\"",
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string"

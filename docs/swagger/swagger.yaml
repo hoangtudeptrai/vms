@@ -5,6 +5,7 @@ definitions:
   github_com_hoangtu1372k2_vms_internal_model.Assignment:
     properties:
       assignment_status:
+        description: gorm:"default:'published';type:assignment_status"
         type: string
       course_id:
         type: string
@@ -21,6 +22,7 @@ definitions:
       max_score:
         type: integer
       status:
+        description: gorm:"default:'draft';type:text;check:status IN ('draft','active','completed')
         type: string
       title:
         type: string
@@ -61,10 +63,12 @@ definitions:
       feedback:
         type: string
       grade:
+        description: gorm:"check:grade >= 0 AND grade <= 10"
         type: number
       id:
         type: string
       status:
+        description: gorm:"default:'pending';type:submission_status"
         type: string
       student_id:
         type: string
@@ -490,6 +494,7 @@ definitions:
       max_score:
         type: number
       percentage:
+        description: gorm:"default:round((score / max_score) * 100, 2)"
         type: number
       score:
         type: number
@@ -1139,11 +1144,11 @@ definitions:
       phone_number:
         type: string
       role:
+        description: gorm:"not null;default:'student';type:user_role"
         type: string
       specializations:
-        items:
-          type: string
-        type: array
+        description: gorm:"type:text[]"
+        type: string
       updated_at:
         type: string
     type: object
