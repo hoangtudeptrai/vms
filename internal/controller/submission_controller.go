@@ -11,7 +11,7 @@ import (
 )
 
 // CreateSubmission godoc
-// @Summary      Create a new Submission
+// @Summary      Create a new submission
 // @Description  Takes a submission JSON and stores in DB. Returns saved JSON.
 // @Tags         Submission
 // @Accept       json
@@ -52,14 +52,14 @@ func CreateSubmission(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id  path  string  true  "Read submission by id"
-// @Success      200  {object}  model.JsonDTORsp[model.UpdateSubmission]
-// @Failure      404  {object}  model.JsonDTORsp[model.UpdateSubmission]
-// @Failure      500  {object}  model.JsonDTORsp[model.UpdateSubmission]
+// @Success      200  {object}  model.JsonDTORsp[model.Submission]
+// @Failure      404  {object}  model.JsonDTORsp[model.Submission]
+// @Failure      500  {object}  model.JsonDTORsp[model.Submission]
 // @Router       /submissions/{id} [get]
 // @Security     BearerAuth
 func GetSubmissionByID(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[model.UpdateSubmission]()
-	dto, err := reposity.ReadItemByIDIntoDTO[model.UpdateSubmission, model.Submission](c.Param("id"))
+	jsonRsp := model.NewJsonDTORsp[model.Submission]()
+	dto, err := reposity.ReadItemByIDIntoDTO[model.Submission, model.Submission](c.Param("id"))
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -76,14 +76,14 @@ func GetSubmissionByID(c *gin.Context) {
 // @Tags         Submission
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateSubmission]
-// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateSubmission]
+// @Success      200  {object}  model.JsonDTORsp[[]model.Submission]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.Submission]
 // @Router       /submissions [get]
 // @Security     BearerAuth
 func GetSubmissions(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[[]model.UpdateSubmission]()
+	jsonRsp := model.NewJsonDTORsp[[]model.Submission]()
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateSubmission, model.Submission]("")
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.Submission, model.Submission]("")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -103,7 +103,7 @@ func GetSubmissions(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path  string  true  "Update submission by id"
-// @Param        submission body  model.UpdateSubmission  true  "Submission JSON"
+// @Param        submission  body  model.UpdateSubmission  true  "Submission JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateSubmission]
 // @Failure      400  {object}  model.JsonDTORsp[model.UpdateSubmission]
 // @Failure      404  {object}  model.JsonDTORsp[model.UpdateSubmission]
@@ -157,4 +157,66 @@ func DeleteSubmission(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNoContent, &jsonRsp)
+}
+
+// GetStudentSubmissions godoc
+// @Summary      Get student's submissions
+// @Description  Returns all submissions for a specific student.
+// @Tags         Submission
+// @Accept       json
+// @Produce      json
+// @Param        student_id  path  string  true  "Student ID"
+// @Success      200  {object}  model.JsonDTORsp[[]model.Submission]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.Submission]
+// @Router       /submissions/student/{student_id} [get]
+// @Security     BearerAuth
+func GetStudentSubmissions(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.Submission]()
+
+	studentID := c.Param("student_id")
+	filter := fmt.Sprintf("student_id = '%s' ORDER BY created_at DESC", studentID)
+
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.Submission, model.Submission](filter)
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}
+
+// GetLatestSubmission godoc
+// @Summary      Get latest submission for a student and assignment
+// @Description  Returns the most recent submission for a specific student and assignment.
+// @Tags         Submission
+// @Accept       json
+// @Produce      json
+// @Param        student_id     path  string  true  "Student ID"
+// @Param        assignment_id  path  string  true  "Assignment ID"
+// @Success      200  {object}  model.JsonDTORsp[model.Submission]
+// @Failure      404  {object}  model.JsonDTORsp[model.Submission]
+// @Failure      500  {object}  model.JsonDTORsp[model.Submission]
+// @Router       /submissions/latest/{student_id}/{assignment_id} [get]
+// @Security     BearerAuth
+func GetLatestSubmission(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[model.Submission]()
+
+	studentID := c.Param("student_id")
+	assignmentID := c.Param("assignment_id")
+	filter := fmt.Sprintf("student_id = '%s' AND assignment_id = '%s' ORDER BY created_at DESC LIMIT 1", studentID, assignmentID)
+
+	dtos, _, err := reposity.ReadAllItemsIntoDTO[model.Submission, model.Submission](filter)
+	if err != nil || len(dtos) == 0 {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = "No submission found"
+		c.JSON(http.StatusNotFound, &jsonRsp)
+		return
+	}
+
+	jsonRsp.Data = dtos[0]
+	c.JSON(http.StatusOK, &jsonRsp)
 }

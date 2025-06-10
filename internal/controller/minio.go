@@ -10,8 +10,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hoangtu1372k2/common-go/reposity"
-	"github.com/hoangtu1372k2/vms/internal/model"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
@@ -152,22 +150,13 @@ func UploadFile(c *gin.Context) {
 
 	// Trả về phản hồi thành công
 	log.Printf("Tải file %s thành công, kích thước: %d bytes", objectName, info.Size)
-
-	var dto model.CreateDocument
-	dto.UploaderID = c.Query("id_user")
-	dto.OriginalFileName = objectName
-	dto.FilePath = fmt.Sprintf("http://%s/%s/%s", minioClient.EndpointURL().Host, bucketName, objectName)
-	dto.MimeType = contentType
-	dto.FileSize = info.Size
-
-	data, err := reposity.CreateItemFromDTO[model.CreateDocument, model.Document](dto)
-	if err != nil {
-		log.Printf("Lỗi tạo document: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Lỗi tạo document: %v", err)})
-		return
-	}
-
-	c.JSON(http.StatusOK, data)
+	c.JSON(http.StatusOK, gin.H{"message": "Tải file thành công",
+		"file_name": objectName,
+		"file_path": fmt.Sprintf("http://%s/%s/%s", minioClient.EndpointURL().Host, bucketName, objectName),
+		"file_size": info.Size,
+		"file_type": contentType,
+		"file_id":   info.Key,
+	})
 }
 
 // GetFile godoc

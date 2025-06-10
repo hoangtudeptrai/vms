@@ -91,12 +91,17 @@ func Run(c *viper.Viper) error {
 			err = reposity.Migrate(
 				&model.User{},
 				&model.Course{},
-				&model.Enrollment{},
 				&model.Assignment{},
-				&model.Document{},
 				&model.Notification{},
-				&model.Submission{},
-				&model.CourseMaterial{},
+				&model.Profile{},
+				&model.Message{},
+				&model.Grade{},
+				&model.AssignmentSubmission{},
+				&model.AssignmentSubmissionFile{},
+				&model.AssignmentDocument{},
+				&model.CourseDocument{},
+				&model.CourseEnrollment{},
+				&model.Lesson{},
 			)
 			if err != nil {
 				panic("Failed to AutoMigrate table! err: " + err.Error())
@@ -172,46 +177,84 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/users/me", handleWrapper(controllers.GetCurrentUser, false))
 
 		// Course routes
-		apiV0.POST("/courses", handleWrapper(controllers.CreateCourse, false))
 		apiV0.GET("/courses", handleWrapper(controllers.GetCourses, false))
+		apiV0.POST("/courses", handleWrapper(controllers.CreateCourse, false))
 		apiV0.GET("/courses/:id", handleWrapper(controllers.GetCourseByID, false))
 		apiV0.PUT("/courses/:id", handleWrapper(controllers.UpdateCourse, false))
 		apiV0.DELETE("/courses/:id", handleWrapper(controllers.DeleteCourse, false))
 
-		// Enrollment routes
-		apiV0.POST("/enrollments", handleWrapper(controllers.CreateEnrollment, false))
-		apiV0.GET("/enrollments", handleWrapper(controllers.GetEnrollments, false))
-		apiV0.GET("/enrollments/:id", handleWrapper(controllers.GetEnrollmentByID, false))
-		apiV0.PUT("/enrollments/:id", handleWrapper(controllers.UpdateEnrollment, false))
-		apiV0.DELETE("/enrollments/:id", handleWrapper(controllers.DeleteEnrollment, false))
+		// Course Enrollment routes
+		apiV0.GET("/course-enrollments", handleWrapper(controllers.GetCourseEnrollments, false))
+		apiV0.POST("/course-enrollments", handleWrapper(controllers.CreateCourseEnrollment, false))
+		apiV0.GET("/course-enrollments/:id", handleWrapper(controllers.GetCourseEnrollmentByID, false))
+		apiV0.PUT("/course-enrollments/:id", handleWrapper(controllers.UpdateCourseEnrollment, false))
+		apiV0.DELETE("/course-enrollments/:id", handleWrapper(controllers.DeleteCourseEnrollment, false))
+
+		// Course Document routes
+		apiV0.GET("/course-documents", handleWrapper(controllers.GetCourseDocuments, false))
+		apiV0.POST("/course-documents", handleWrapper(controllers.CreateCourseDocument, false))
+		apiV0.GET("/course-documents/:id", handleWrapper(controllers.GetCourseDocumentByID, false))
+		apiV0.PUT("/course-documents/:id", handleWrapper(controllers.UpdateCourseDocument, false))
+		apiV0.DELETE("/course-documents/:id", handleWrapper(controllers.DeleteCourseDocument, false))
 
 		// Assignment routes
-		apiV0.POST("/assignments", handleWrapper(controllers.CreateAssignment, false))
 		apiV0.GET("/assignments", handleWrapper(controllers.GetAssignments, false))
+		apiV0.POST("/assignments", handleWrapper(controllers.CreateAssignment, false))
 		apiV0.GET("/assignments/:id", handleWrapper(controllers.GetAssignmentByID, false))
 		apiV0.PUT("/assignments/:id", handleWrapper(controllers.UpdateAssignment, false))
 		apiV0.DELETE("/assignments/:id", handleWrapper(controllers.DeleteAssignment, false))
 
-		// Document routes
-		apiV0.POST("/documents", handleWrapper(controllers.CreateDocument, false))
-		apiV0.GET("/documents", handleWrapper(controllers.GetDocuments, false))
-		apiV0.GET("/documents/:id", handleWrapper(controllers.GetDocumentByID, false))
-		apiV0.PUT("/documents/:id", handleWrapper(controllers.UpdateDocument, false))
-		apiV0.DELETE("/documents/:id", handleWrapper(controllers.DeleteDocument, false))
+		// Assignment Submission routes
+		apiV0.GET("/assignment-submissions", handleWrapper(controllers.GetAssignmentSubmissions, false))
+		apiV0.POST("/assignment-submissions", handleWrapper(controllers.CreateAssignmentSubmission, false))
+		apiV0.GET("/assignment-submissions/:id", handleWrapper(controllers.GetAssignmentSubmissionByID, false))
+		apiV0.PUT("/assignment-submissions/:id", handleWrapper(controllers.UpdateAssignmentSubmission, false))
+		apiV0.DELETE("/assignment-submissions/:id", handleWrapper(controllers.DeleteAssignmentSubmission, false))
 
-		// Notification routes
-		apiV0.POST("/notifications", handleWrapper(controllers.CreateNotification, false))
-		apiV0.GET("/notifications", handleWrapper(controllers.GetNotifications, false))
-		apiV0.GET("/notifications/:id", handleWrapper(controllers.GetNotificationByID, false))
-		apiV0.PUT("/notifications/:id", handleWrapper(controllers.UpdateNotification, false))
-		apiV0.DELETE("/notifications/:id", handleWrapper(controllers.DeleteNotification, false))
+		// Assignment Submission File routes
+		apiV0.GET("/assignment-submission-files", handleWrapper(controllers.GetAssignmentSubmissionFiles, false))
+		apiV0.POST("/assignment-submission-files", handleWrapper(controllers.CreateAssignmentSubmissionFile, false))
+		apiV0.GET("/assignment-submission-files/:id", handleWrapper(controllers.GetAssignmentSubmissionFileByID, false))
+		apiV0.PUT("/assignment-submission-files/:id", handleWrapper(controllers.UpdateAssignmentSubmissionFile, false))
+		apiV0.DELETE("/assignment-submission-files/:id", handleWrapper(controllers.DeleteAssignmentSubmissionFile, false))
+
+		// Assignment Document routes
+		apiV0.GET("/assignment-documents", handleWrapper(controllers.GetAssignmentDocuments, false))
+		apiV0.POST("/assignment-documents", handleWrapper(controllers.CreateAssignmentDocument, false))
+		apiV0.GET("/assignment-documents/:id", handleWrapper(controllers.GetAssignmentDocumentByID, false))
+		apiV0.PUT("/assignment-documents/:id", handleWrapper(controllers.UpdateAssignmentDocument, false))
+		apiV0.DELETE("/assignment-documents/:id", handleWrapper(controllers.DeleteAssignmentDocument, false))
+
+		// Lesson routes
+		apiV0.GET("/lessons", handleWrapper(controllers.GetLessons, false))
+		apiV0.POST("/lessons", handleWrapper(controllers.CreateLesson, false))
+		apiV0.GET("/lessons/:id", handleWrapper(controllers.GetLessonByID, false))
+		apiV0.PUT("/lessons/:id", handleWrapper(controllers.UpdateLesson, false))
+		apiV0.DELETE("/lessons/:id", handleWrapper(controllers.DeleteLesson, false))
+
+		// Comment routes
+		apiV0.GET("/comments", handleWrapper(controllers.GetComments, false))
+		apiV0.POST("/comments", handleWrapper(controllers.CreateComment, false))
+		apiV0.GET("/comments/:id", handleWrapper(controllers.GetCommentByID, false))
+		apiV0.PUT("/comments/:id", handleWrapper(controllers.UpdateComment, false))
+		apiV0.DELETE("/comments/:id", handleWrapper(controllers.DeleteComment, false))
+
+		// Grade routes
+		apiV0.GET("/grades", handleWrapper(controllers.GetGrades, false))
+		apiV0.POST("/grades", handleWrapper(controllers.CreateGrade, false))
+		apiV0.GET("/grades/:id", handleWrapper(controllers.GetGradeByID, false))
+		apiV0.PUT("/grades/:id", handleWrapper(controllers.UpdateGrade, false))
+		apiV0.DELETE("/grades/:id", handleWrapper(controllers.DeleteGrade, false))
 
 		// Submission routes
-		apiV0.POST("/submissions", handleWrapper(controllers.CreateSubmission, false))
 		apiV0.GET("/submissions", handleWrapper(controllers.GetSubmissions, false))
+		apiV0.POST("/submissions", handleWrapper(controllers.CreateSubmission, false))
 		apiV0.GET("/submissions/:id", handleWrapper(controllers.GetSubmissionByID, false))
 		apiV0.PUT("/submissions/:id", handleWrapper(controllers.UpdateSubmission, false))
 		apiV0.DELETE("/submissions/:id", handleWrapper(controllers.DeleteSubmission, false))
+
+		// Notification routes
+		apiV0.GET("/notifications", handleWrapper(controllers.GetNotifications, false))
 
 		// Other utility routes
 		apiV0.GET("/health", handleWrapper(controllers.Health, false))

@@ -76,14 +76,14 @@ func GetAssignmentByID(c *gin.Context) {
 // @Tags         Assignment
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.JsonDTORsp[[]model.UpdateAssignment]
-// @Failure      500  {object}  model.JsonDTORsp[[]model.UpdateAssignment]
+// @Success      200  {object}  model.JsonDTORsp[[]model.Assignment]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.Assignment]
 // @Router       /assignments [get]
 // @Security     BearerAuth
 func GetAssignments(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[[]model.UpdateAssignment]()
+	jsonRsp := model.NewJsonDTORsp[[]model.Assignment]()
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.UpdateAssignment, model.Assignment]("")
+	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.Assignment, model.Assignment]("")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -103,7 +103,7 @@ func GetAssignments(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path  string  true  "Update assignment by id"
-// @Param        assignment body  model.UpdateAssignment  true  "Assignment JSON"
+// @Param        assignment  body  model.UpdateAssignment  true  "Assignment JSON"
 // @Success      200  {object}  model.JsonDTORsp[model.UpdateAssignment]
 // @Failure      400  {object}  model.JsonDTORsp[model.UpdateAssignment]
 // @Failure      404  {object}  model.JsonDTORsp[model.UpdateAssignment]
