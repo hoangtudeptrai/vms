@@ -14,8 +14,8 @@ type Assignment struct {
 	DueDate          *time.Time `json:"due_date"`
 	CreatedBy        uuid.UUID  `json:"created_by" gorm:"type:uuid;not null"`
 	Status           string     `json:"status"` //gorm:"default:'draft';type:text;check:status IN ('draft','active','completed')
-	CreatedAt        time.Time  `json:"created_at" gorm:"not null;default:now()"`
-	UpdatedAt        time.Time  `json:"updated_at" gorm:"not null;default:now()"`
 	MaxScore         int        `json:"max_score" gorm:"default:100"`
 	AssignmentStatus string     `json:"assignment_status"` // gorm:"default:'published';type:assignment_status"
+	CreatedAt        time.Time  `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt        time.Time  `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

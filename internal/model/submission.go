@@ -14,7 +14,7 @@ type Submission struct {
 	Content      string    `gorm:"type:text;not null" json:"content"`
 	FileURL      string    `gorm:"type:text" json:"file_url"`
 	Status       string    `gorm:"type:varchar(20);not null;default:'submitted'" json:"status"` // submitted, graded
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 	DeletedAt    gorm.DeletedAt
 }

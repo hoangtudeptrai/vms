@@ -14,6 +14,6 @@ type Lesson struct {
 	Duration   *int      `json:"duration"`
 	OrderIndex int       `json:"order_index" gorm:"not null"`
 	Type       string    `json:"type" gorm:"default:'text'"`
-	CreatedAt  time.Time `json:"created_at" gorm:"default:now()"`
-	UpdatedAt  time.Time `json:"updated_at" gorm:"default:now()"`
+	CreatedAt  time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt  time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

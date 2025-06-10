@@ -165,18 +165,38 @@ func DeleteCourse(c *gin.Context) {
 // @Tags         Course
 // @Accept       json
 // @Produce      json
-// @Param        instructor_id  path  string  true  "Instructor ID"
+// @Param        instructor_id  query  string  true  "Instructor ID"
+// @Param        title         query  string  false "Search by title"
+// @Param        description   query  string  false "Search by description"
 // @Success      200  {object}  model.JsonDTORsp[[]model.Course]
 // @Failure      500  {object}  model.JsonDTORsp[[]model.Course]
-// @Router       /courses/instructor/{instructor_id} [get]
+// @Router       /courses/instructor [get]
 // @Security     BearerAuth
 func GetCoursesByInstructor(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[[]model.Course]()
 
-	instructorID := c.Param("instructor_id")
-	filter := fmt.Sprintf("instructor_id = '%s'", instructorID)
+	instructorID := c.Query("instructor_id")
+	title := c.Query("title")
+	description := c.Query("description")
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.Course, model.Course](filter)
+	// Create new query
+	query := reposity.NewQuery[model.Course, model.Course]()
+
+	// Add base condition for instructor's courses
+	query.AddRawCondition("", "instructor_id = ?", instructorID)
+
+	// Add title search if provided
+	if title != "" {
+		query.AddConditionOfTextField("AND", "title", "LIKE", title)
+	}
+
+	// Add description search if provided
+	if description != "" {
+		query.AddConditionOfTextField("AND", "description", "LIKE", description)
+	}
+
+	// Execute query without paging
+	dtos, total, err := query.ExecNoPaging("")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -195,18 +215,38 @@ func GetCoursesByInstructor(c *gin.Context) {
 // @Tags         Course
 // @Accept       json
 // @Produce      json
-// @Param        student_id  path  string  true  "Student ID"
+// @Param        student_id  query  string  true  "Student ID"
+// @Param        title       query  string  false "Search by title"
+// @Param        description query  string  false "Search by description"
 // @Success      200  {object}  model.JsonDTORsp[[]model.Course]
 // @Failure      500  {object}  model.JsonDTORsp[[]model.Course]
-// @Router       /courses/enrolled/{student_id} [get]
+// @Router       /courses/enrolled [get]
 // @Security     BearerAuth
 func GetEnrolledCourses(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[[]model.Course]()
 
-	studentID := c.Param("student_id")
-	filter := fmt.Sprintf("id IN (SELECT course_id FROM course_enrollments WHERE student_id = '%s')", studentID)
+	studentID := c.Query("student_id")
+	title := c.Query("title")
+	description := c.Query("description")
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.Course, model.Course](filter)
+	// Create new query
+	query := reposity.NewQuery[model.Course, model.Course]()
+
+	// Add base condition for enrolled courses
+	query.AddRawCondition("", "id IN (SELECT course_id FROM course_enrollment WHERE student_id = ?)", studentID)
+
+	// Add title search if provided
+	if title != "" {
+		query.AddConditionOfTextField("AND", "title", "LIKE", title)
+	}
+
+	// Add description search if provided
+	if description != "" {
+		query.AddConditionOfTextField("AND", "description", "LIKE", description)
+	}
+
+	// Execute query without paging
+	dtos, total, err := query.ExecNoPaging("")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()

@@ -14,5 +14,6 @@ type Notification struct {
 	Type      string    `json:"type" gorm:"default:'system'"`
 	IsRead    bool      `json:"is_read" gorm:"default:false"`
 	RelatedID uuid.UUID `json:"related_id" gorm:"type:uuid"`
-	CreatedAt time.Time `json:"created_at" gorm:"default:now()"`
+	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

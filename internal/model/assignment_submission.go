@@ -15,4 +15,6 @@ type AssignmentSubmission struct {
 	Feedback     *string   `json:"feedback"`
 	Content      *string   `json:"content"`
 	Status       string    `json:"status"` // gorm:"default:'pending';type:submission_status"
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

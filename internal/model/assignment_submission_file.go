@@ -13,5 +13,6 @@ type AssignmentSubmissionFile struct {
 	FilePath     string     `json:"file_path" gorm:"not null"`
 	FileSize     *int64     `json:"file_size"`
 	FileType     *string    `json:"file_type"`
-	UploadedAt   time.Time  `json:"uploaded_at" gorm:"default:now()"`
+	CreatedAt    time.Time  `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt    time.Time  `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

@@ -16,5 +16,7 @@ type Grade struct {
 	Percentage   float64   `json:"percentage"` //gorm:"default:round((score / max_score) * 100, 2)"
 	GradedBy     uuid.UUID `json:"graded_by" gorm:"type:uuid"`
 	GradedAt     time.Time `json:"graded_at" gorm:"default:now()"`
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 	Comments     *string   `json:"comments"`
 }

@@ -1862,7 +1862,7 @@
                 }
             }
         },
-        "/courses/enrolled/{student_id}": {
+        "/courses/enrolled": {
             "get": {
                 "security": [
                     {
@@ -1885,8 +1885,20 @@
                         "type": "string",
                         "description": "Student ID",
                         "name": "student_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1905,7 +1917,7 @@
                 }
             }
         },
-        "/courses/instructor/{instructor_id}": {
+        "/courses/instructor": {
             "get": {
                 "security": [
                     {
@@ -1928,8 +1940,20 @@
                         "type": "string",
                         "description": "Instructor ID",
                         "name": "instructor_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -4806,7 +4830,7 @@
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "created_by": {
@@ -4831,7 +4855,7 @@
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -4842,7 +4866,7 @@
                 "assignment_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
@@ -4866,7 +4890,7 @@
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "uploaded_by": {
@@ -4881,6 +4905,9 @@
                     "type": "string"
                 },
                 "content": {
+                    "type": "string"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "feedback": {
@@ -4902,12 +4929,18 @@
                 },
                 "submitted_at": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.AssignmentSubmissionFile": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "file_name": {
                     "type": "string"
                 },
@@ -4926,7 +4959,7 @@
                 "submission_id": {
                     "type": "string"
                 },
-                "uploaded_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -4937,7 +4970,7 @@
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
@@ -4949,7 +4982,7 @@
                 "submission_id": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_id": {
@@ -5001,7 +5034,7 @@
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
@@ -5025,7 +5058,7 @@
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "uploaded_by": {
@@ -5037,6 +5070,9 @@
             "type": "object",
             "properties": {
                 "course_id": {
+                    "type": "string"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "enrolled_at": {
@@ -5055,6 +5091,9 @@
                     "type": "string"
                 },
                 "student_id": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -5508,6 +5547,9 @@
                 "course_id": {
                     "type": "string"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
                 "graded_at": {
                     "type": "string"
                 },
@@ -5528,6 +5570,9 @@
                     "type": "number"
                 },
                 "student_id": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6412,7 +6457,7 @@
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "duration": {
@@ -6430,7 +6475,7 @@
                 "type": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6441,7 +6486,7 @@
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -6461,6 +6506,9 @@
                 },
                 "subject": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
@@ -6470,7 +6518,7 @@
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -6486,6 +6534,9 @@
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_id": {
@@ -6548,7 +6599,7 @@
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
@@ -6567,7 +6618,7 @@
                 "student_id": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6894,7 +6945,7 @@
                 "bio": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "date_of_birth": {
@@ -6923,7 +6974,7 @@
                     "description": "'student', 'teacher', 'admin'",
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_name": {

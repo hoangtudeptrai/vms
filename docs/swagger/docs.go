@@ -1873,7 +1873,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/courses/enrolled/{student_id}": {
+        "/courses/enrolled": {
             "get": {
                 "security": [
                     {
@@ -1896,8 +1896,20 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Student ID",
                         "name": "student_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1916,7 +1928,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/courses/instructor/{instructor_id}": {
+        "/courses/instructor": {
             "get": {
                 "security": [
                     {
@@ -1939,8 +1951,20 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Instructor ID",
                         "name": "instructor_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -4817,7 +4841,7 @@ const docTemplate = `{
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "created_by": {
@@ -4842,7 +4866,7 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -4853,7 +4877,7 @@ const docTemplate = `{
                 "assignment_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
@@ -4877,7 +4901,7 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "uploaded_by": {
@@ -4892,6 +4916,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "content": {
+                    "type": "string"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "feedback": {
@@ -4913,12 +4940,18 @@ const docTemplate = `{
                 },
                 "submitted_at": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
         "github_com_hoangtu1372k2_vms_internal_model.AssignmentSubmissionFile": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "file_name": {
                     "type": "string"
                 },
@@ -4937,7 +4970,7 @@ const docTemplate = `{
                 "submission_id": {
                     "type": "string"
                 },
-                "uploaded_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -4948,7 +4981,7 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
@@ -4960,7 +4993,7 @@ const docTemplate = `{
                 "submission_id": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_id": {
@@ -5012,7 +5045,7 @@ const docTemplate = `{
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
@@ -5036,7 +5069,7 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "uploaded_by": {
@@ -5048,6 +5081,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "course_id": {
+                    "type": "string"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "enrolled_at": {
@@ -5066,6 +5102,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "student_id": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -5519,6 +5558,9 @@ const docTemplate = `{
                 "course_id": {
                     "type": "string"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
                 "graded_at": {
                     "type": "string"
                 },
@@ -5539,6 +5581,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "student_id": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6423,7 +6468,7 @@ const docTemplate = `{
                 "course_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "duration": {
@@ -6441,7 +6486,7 @@ const docTemplate = `{
                 "type": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6452,7 +6497,7 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -6472,6 +6517,9 @@ const docTemplate = `{
                 },
                 "subject": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
@@ -6481,7 +6529,7 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -6497,6 +6545,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_id": {
@@ -6559,7 +6610,7 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
@@ -6578,7 +6629,7 @@ const docTemplate = `{
                 "student_id": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -6905,7 +6956,7 @@ const docTemplate = `{
                 "bio": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "date_of_birth": {
@@ -6934,7 +6985,7 @@ const docTemplate = `{
                     "description": "'student', 'teacher', 'admin'",
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
                 "user_name": {

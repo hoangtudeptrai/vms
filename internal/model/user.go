@@ -19,8 +19,8 @@ type User struct {
 	DateOfBirth       time.Time `json:"date_of_birth,omitempty" db:"date_of_birth"` // Sử dụng time.Time cho DATE có thể NULL
 	Address           string    `json:"address,omitempty" db:"address"`
 	Bio               string    `json:"bio,omitempty" db:"bio"`
-	CreatedAt         time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt         time.Time `json:"updated_at" db:"updated_at"`
+	CreatedAt         time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt         time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }
 
 // CreateUser DTO for creating a new User

@@ -14,4 +14,6 @@ type CourseEnrollment struct {
 	Progress   int       `json:"progress" gorm:"default:0;check:progress >= 0 AND progress <= 100"`
 	Status     string    `json:"status" gorm:"default:'enrolled';type:text;check:status IN ('enrolled','completed','dropped')"`
 	LastActive time.Time `json:"last_active" gorm:"default:now()"`
+	CreatedAt  time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt  time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

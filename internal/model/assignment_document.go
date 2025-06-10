@@ -16,6 +16,6 @@ type AssignmentDocument struct {
 	FileSize     *int64    `json:"file_size"`
 	FileType     *string   `json:"file_type"`
 	UploadedBy   uuid.UUID `json:"uploaded_by" gorm:"type:uuid;not null"`
-	CreatedAt    time.Time `json:"created_at" gorm:"not null;default:now()"`
-	UpdatedAt    time.Time `json:"updated_at" gorm:"not null;default:now()"`
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }

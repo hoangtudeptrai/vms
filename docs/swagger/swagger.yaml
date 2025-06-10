@@ -9,9 +9,9 @@ definitions:
         type: string
       course_id:
         type: string
-      created_at:
-        type: string
       created_by:
+        type: string
+      createdAt:
         type: string
       description:
         type: string
@@ -26,14 +26,14 @@ definitions:
         type: string
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.AssignmentDocument:
     properties:
       assignment_id:
         type: string
-      created_at:
+      createdAt:
         type: string
       description:
         type: string
@@ -49,7 +49,7 @@ definitions:
         type: string
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
       uploaded_by:
         type: string
@@ -59,6 +59,8 @@ definitions:
       assignment_id:
         type: string
       content:
+        type: string
+      createdAt:
         type: string
       feedback:
         type: string
@@ -74,9 +76,13 @@ definitions:
         type: string
       submitted_at:
         type: string
+      updatedAt:
+        type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.AssignmentSubmissionFile:
     properties:
+      createdAt:
+        type: string
       file_name:
         type: string
       file_path:
@@ -89,14 +95,14 @@ definitions:
         type: string
       submission_id:
         type: string
-      uploaded_at:
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.Comment:
     properties:
       content:
         type: string
-      created_at:
+      createdAt:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
@@ -104,7 +110,7 @@ definitions:
         type: string
       submission_id:
         type: string
-      updated_at:
+      updatedAt:
         type: string
       user_id:
         type: string
@@ -138,7 +144,7 @@ definitions:
     properties:
       course_id:
         type: string
-      created_at:
+      createdAt:
         type: string
       description:
         type: string
@@ -154,7 +160,7 @@ definitions:
         type: string
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
       uploaded_by:
         type: string
@@ -162,6 +168,8 @@ definitions:
   github_com_hoangtu1372k2_vms_internal_model.CourseEnrollment:
     properties:
       course_id:
+        type: string
+      createdAt:
         type: string
       enrolled_at:
         type: string
@@ -174,6 +182,8 @@ definitions:
       status:
         type: string
       student_id:
+        type: string
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateAssignment:
@@ -485,6 +495,8 @@ definitions:
         type: string
       course_id:
         type: string
+      createdAt:
+        type: string
       graded_at:
         type: string
       graded_by:
@@ -499,6 +511,8 @@ definitions:
       score:
         type: number
       student_id:
+        type: string
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment:
@@ -1068,7 +1082,7 @@ definitions:
         type: string
       course_id:
         type: string
-      created_at:
+      createdAt:
         type: string
       duration:
         type: integer
@@ -1080,14 +1094,14 @@ definitions:
         type: string
       type:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.Message:
     properties:
       content:
         type: string
-      created_at:
+      createdAt:
         type: string
       id:
         type: string
@@ -1101,12 +1115,14 @@ definitions:
         type: string
       subject:
         type: string
+      updatedAt:
+        type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.Notification:
     properties:
       content:
         type: string
-      created_at:
+      createdAt:
         type: string
       id:
         type: string
@@ -1117,6 +1133,8 @@ definitions:
       title:
         type: string
       type:
+        type: string
+      updatedAt:
         type: string
       user_id:
         type: string
@@ -1158,7 +1176,7 @@ definitions:
         type: string
       content:
         type: string
-      created_at:
+      createdAt:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
@@ -1171,7 +1189,7 @@ definitions:
         type: string
       student_id:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   github_com_hoangtu1372k2_vms_internal_model.UpdateAssignment:
@@ -1389,7 +1407,7 @@ definitions:
         type: string
       bio:
         type: string
-      created_at:
+      createdAt:
         type: string
       date_of_birth:
         description: Sử dụng time.Time cho DATE có thể NULL
@@ -1409,7 +1427,7 @@ definitions:
       role:
         description: '''student'', ''teacher'', ''admin'''
         type: string
-      updated_at:
+      updatedAt:
         type: string
       user_name:
         type: string
@@ -2734,16 +2752,24 @@ paths:
       summary: Update single course by id
       tags:
       - Course
-  /courses/enrolled/{student_id}:
+  /courses/enrolled:
     get:
       consumes:
       - application/json
       description: Returns all courses a student is enrolled in.
       parameters:
       - description: Student ID
-        in: path
+        in: query
         name: student_id
         required: true
+        type: string
+      - description: Search by title
+        in: query
+        name: title
+        type: string
+      - description: Search by description
+        in: query
+        name: description
         type: string
       produces:
       - application/json
@@ -2761,16 +2787,24 @@ paths:
       summary: Get enrolled courses by student id
       tags:
       - Course
-  /courses/instructor/{instructor_id}:
+  /courses/instructor:
     get:
       consumes:
       - application/json
       description: Returns all courses taught by a specific instructor.
       parameters:
       - description: Instructor ID
-        in: path
+        in: query
         name: instructor_id
         required: true
+        type: string
+      - description: Search by title
+        in: query
+        name: title
+        type: string
+      - description: Search by description
+        in: query
+        name: description
         type: string
       produces:
       - application/json

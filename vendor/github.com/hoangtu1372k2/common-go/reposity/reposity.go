@@ -276,6 +276,21 @@ func (query *SQLQuery[M, E]) AddConditionOfJsonbField(cascadingLogic string, fie
 	}
 }
 
+// AddRawCondition adds a raw SQL condition to the query
+func (query *SQLQuery[M, E]) AddRawCondition(cascadingLogic string, condition string, args ...interface{}) {
+	if condition == "" {
+		return
+	}
+
+	if query.expressStr == "" {
+		query.expressStr = condition
+	} else {
+		query.expressStr = fmt.Sprintf("%s %s %s", query.expressStr, cascadingLogic, condition)
+	}
+
+	query.args = append(query.args, args...)
+}
+
 // Exec run the the query to get all items with current filter, no paging
 func (query *SQLQuery[M, E]) ExecNoPaging(sort string) (dtos []M, count int64, err error) {
 	if !Connected {

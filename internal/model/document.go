@@ -17,7 +17,7 @@ type Document struct {
 	CourseID    uuid.UUID `gorm:"type:uuid;not null" json:"course_id"`
 	LessonID    uuid.UUID `gorm:"type:uuid" json:"lesson_id"`
 	CreatedBy   uuid.UUID `gorm:"type:uuid;not null" json:"created_by"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	CreatedAt   time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt   time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 	DeletedAt   gorm.DeletedAt
 }

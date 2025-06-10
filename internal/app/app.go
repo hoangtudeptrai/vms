@@ -182,8 +182,8 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/courses/:id", handleWrapper(controllers.GetCourseByID, false))
 		apiV0.PUT("/courses/:id", handleWrapper(controllers.UpdateCourse, false))
 		apiV0.DELETE("/courses/:id", handleWrapper(controllers.DeleteCourse, false))
-		apiV0.GET("/courses/instructor/:id", handleWrapper(controllers.GetCoursesByInstructor, false))
-		apiV0.GET("/courses/enrolled/:id", handleWrapper(controllers.GetEnrolledCourses, false))
+		apiV0.GET("/courses/instructor", handleWrapper(controllers.GetCoursesByInstructor, false))
+		apiV0.GET("/courses/enrolled", handleWrapper(controllers.GetEnrolledCourses, false))
 
 		// Course Enrollment routes
 		apiV0.GET("/enrollments", handleWrapper(controllers.GetCourseEnrollments, false))

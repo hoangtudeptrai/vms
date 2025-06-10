@@ -14,5 +14,6 @@ type Message struct {
 	Content    string    `json:"content" gorm:"not null"`
 	IsRead     bool      `json:"is_read" gorm:"default:false"`
 	RepliedTo  uuid.UUID `json:"replied_to" gorm:"type:uuid"`
-	CreatedAt  time.Time `json:"created_at" gorm:"default:now()"`
+	CreatedAt  time.Time `json:"createdAt" gorm:"column:created_at;autoCreateTime:true"`
+	UpdatedAt  time.Time `json:"updatedAt" gorm:"column:updated_at;autoUpdateTime:true"`
 }
