@@ -184,7 +184,7 @@ type CreateCourseDocument struct {
 	FilePath    string    `json:"file_path" binding:"required"`
 	FileSize    *int64    `json:"file_size"`
 	FileType    *string   `json:"file_type"`
-	UploadedBy  string    `json:"uploaded_by" binding:"required"`
+	UploadedBy  uuid.UUID `json:"uploaded_by" binding:"required"`
 }
 
 type UpdateCourseDocument struct {
