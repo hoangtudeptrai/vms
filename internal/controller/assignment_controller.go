@@ -158,3 +158,53 @@ func DeleteAssignment(c *gin.Context) {
 
 	c.JSON(http.StatusNoContent, &jsonRsp)
 }
+
+// GetAssignmentsByCourseID godoc
+// @Summary      Get assignments by course id
+// @Description  Returns all assignments for a specific course.
+// @Tags         Assignment
+// @Accept       json
+// @Produce      json
+// @Param        course_id    path    string  true  "Course ID"
+// @Param        title       query   string  false "Search by title"
+// @Param        description query   string  false "Search by description"
+// @Success      200  {object}  model.JsonDTORsp[[]model.Assignment]
+// @Failure      500  {object}  model.JsonDTORsp[[]model.Assignment]
+// @Router       /courses/{course_id}/assignments [get]
+// @Security     BearerAuth
+func GetAssignmentsByCourseID(c *gin.Context) {
+	jsonRsp := model.NewJsonDTORsp[[]model.Assignment]()
+
+	courseID := c.Param("course_id")
+	title := c.Query("title")
+	description := c.Query("description")
+
+	// Create new query
+	query := reposity.NewQuery[model.Assignment, model.Assignment]()
+
+	// Add base condition for course assignments
+	query.AddRawCondition("", "course_id = ?", courseID)
+
+	// Add title search if provided
+	if title != "" {
+		query.AddConditionOfTextField("AND", "title", "LIKE", title)
+	}
+
+	// Add description search if provided
+	if description != "" {
+		query.AddConditionOfTextField("AND", "description", "LIKE", description)
+	}
+
+	// Execute query without paging
+	dtos, total, err := query.ExecNoPaging("")
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusReadItemFailed
+		jsonRsp.Message = err.Error()
+		c.JSON(http.StatusInternalServerError, &jsonRsp)
+		return
+	}
+
+	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
+	jsonRsp.Data = dtos
+	c.JSON(http.StatusOK, &jsonRsp)
+}

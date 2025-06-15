@@ -1972,6 +1972,61 @@
                 }
             }
         },
+        "/courses/{course_id}/assignments": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all assignments for a specific course.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assignment"
+                ],
+                "summary": "Get assignments by course id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
+                        }
+                    }
+                }
+            }
+        },
         "/courses/{id}": {
             "get": {
                 "security": [
