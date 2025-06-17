@@ -200,7 +200,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/course-documents/:id", handleWrapper(controllers.GetCourseDocumentByID, false))
 		apiV0.PUT("/course-documents/:id", handleWrapper(controllers.UpdateCourseDocument, false))
 		apiV0.DELETE("/course-documents/:id", handleWrapper(controllers.DeleteCourseDocument, false))
-		apiV0.GET("/course-documents/course/:id", handleWrapper(controllers.GetCourseDocumentsByCourse, false))
+		apiV0.GET("/course-documents/course/:courseID", handleWrapper(controllers.GetCourseDocumentsByCourse, false))
 
 		// Assignment routes
 		apiV0.GET("/assignments", handleWrapper(controllers.GetAssignments, false))
@@ -233,7 +233,7 @@ func Run(c *viper.Viper) error {
 		apiV0.GET("/assignment-documents/:id", handleWrapper(controllers.GetAssignmentDocumentByID, false))
 		apiV0.PUT("/assignment-documents/:id", handleWrapper(controllers.UpdateAssignmentDocument, false))
 		apiV0.DELETE("/assignment-documents/:id", handleWrapper(controllers.DeleteAssignmentDocument, false))
-		apiV0.GET("/assignment-documents/assignment/:id", handleWrapper(controllers.GetAssignmentDocumentsByAssignment, false))
+		apiV0.GET("/assignment-documents/assignment/:assignmentID", handleWrapper(controllers.GetAssignmentDocumentsByAssignment, false))
 
 		// Lesson routes
 		apiV0.GET("/lessons", handleWrapper(controllers.GetLessons, false))

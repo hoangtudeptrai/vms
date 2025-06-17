@@ -7,6 +7,8 @@ definitions:
       assignment_status:
         description: gorm:"default:'published';type:assignment_status"
         type: string
+      content:
+        type: string
       course_id:
         type: string
       created_by:
@@ -188,11 +190,17 @@ definitions:
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateAssignment:
     properties:
+      content:
+        type: string
       course_id:
+        type: string
+      created_by:
         type: string
       description:
         type: string
       due_date:
+        type: string
+      id:
         type: string
       max_score:
         type: integer
@@ -200,6 +208,7 @@ definitions:
         type: string
     required:
     - course_id
+    - created_by
     - title
     type: object
   github_com_hoangtu1372k2_vms_internal_model.CreateAssignmentDocument:
@@ -1196,6 +1205,8 @@ definitions:
     properties:
       assignment_status:
         type: string
+      content:
+        type: string
       description:
         type: string
       due_date:
@@ -1616,7 +1627,7 @@ paths:
       summary: Update single assignment document by id
       tags:
       - AssignmentDocument
-  /assignment-documents/assignment/{assignment_id}:
+  /assignment-documents/assignment/{assignmentID}:
     get:
       consumes:
       - application/json
@@ -1624,7 +1635,7 @@ paths:
       parameters:
       - description: Assignment ID
         in: path
-        name: assignment_id
+        name: assignmentID
         required: true
         type: string
       produces:
@@ -2185,6 +2196,41 @@ paths:
       summary: Update single assignment by id
       tags:
       - Assignment
+  /assignments/course/{course_id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns all assignments for a specific course.
+      parameters:
+      - description: Course ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      - description: Search by title
+        in: query
+        name: title
+        type: string
+      - description: Search by description
+        in: query
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment'
+      security:
+      - BearerAuth: []
+      summary: Get assignments by course id
+      tags:
+      - Assignment
   /auth/login:
     post:
       consumes:
@@ -2652,41 +2698,6 @@ paths:
       summary: Create a new course
       tags:
       - Course
-  /courses/{course_id}/assignments:
-    get:
-      consumes:
-      - application/json
-      description: Returns all assignments for a specific course.
-      parameters:
-      - description: Course ID
-        in: path
-        name: course_id
-        required: true
-        type: string
-      - description: Search by title
-        in: query
-        name: title
-        type: string
-      - description: Search by description
-        in: query
-        name: description
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment'
-      security:
-      - BearerAuth: []
-      summary: Get assignments by course id
-      tags:
-      - Assignment
   /courses/{id}:
     delete:
       consumes:

@@ -98,7 +98,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assignment-documents/assignment/{assignment_id}": {
+        "/assignment-documents/assignment/{assignmentID}": {
             "get": {
                 "security": [
                     {
@@ -120,7 +120,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Assignment ID",
-                        "name": "assignment_id",
+                        "name": "assignmentID",
                         "in": "path",
                         "required": true
                     }
@@ -979,6 +979,61 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-github_com_hoangtu1372k2_vms_internal_model_CreateAssignment"
+                        }
+                    }
+                }
+            }
+        },
+        "/assignments/course/{course_id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns all assignments for a specific course.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assignment"
+                ],
+                "summary": "Get assignments by course id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search by description",
+                        "name": "description",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
                         }
                     }
                 }
@@ -1978,61 +2033,6 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Course"
-                        }
-                    }
-                }
-            }
-        },
-        "/courses/{course_id}/assignments": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Returns all assignments for a specific course.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Assignment"
-                ],
-                "summary": "Get assignments by course id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Course ID",
-                        "name": "course_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search by title",
-                        "name": "title",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Search by description",
-                        "name": "description",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hoangtu1372k2_vms_internal_model.JsonDTORsp-array_github_com_hoangtu1372k2_vms_internal_model_Assignment"
                         }
                     }
                 }
@@ -4893,6 +4893,9 @@ const docTemplate = `{
                     "description": "gorm:\"default:'published';type:assignment_status\"",
                     "type": "string"
                 },
+                "content": {
+                    "type": "string"
+                },
                 "course_id": {
                     "type": "string"
                 },
@@ -5168,16 +5171,26 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "course_id",
+                "created_by",
                 "title"
             ],
             "properties": {
+                "content": {
+                    "type": "string"
+                },
                 "course_id": {
+                    "type": "string"
+                },
+                "created_by": {
                     "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
                 "due_date": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "max_score": {
@@ -6693,6 +6706,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "assignment_status": {
+                    "type": "string"
+                },
+                "content": {
                     "type": "string"
                 },
                 "description": {

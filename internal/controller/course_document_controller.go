@@ -171,12 +171,12 @@ func DeleteCourseDocument(c *gin.Context) {
 // @Router       /course-documents/course/{course_id} [get]
 // @Security     BearerAuth
 func GetCourseDocumentsByCourse(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[[]model.CourseDocument]()
+	jsonRsp := model.NewJsonDTOListRsp[model.CourseDocument]()
 
-	courseID := c.Param("course_id")
-	filter := fmt.Sprintf("course_id = '%s' ORDER BY created_at DESC", courseID)
+	query := reposity.NewQuery[model.CourseDocument, model.CourseDocument]()
+	query.AddConditionOfTextField("AND", "course_id", "=", c.Param("course_id"))
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.CourseDocument, model.CourseDocument](filter)
+	dtos, _, err := query.ExecNoPaging("-created_at")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -184,7 +184,7 @@ func GetCourseDocumentsByCourse(c *gin.Context) {
 		return
 	}
 
-	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
 	jsonRsp.Data = dtos
 	c.JSON(http.StatusOK, &jsonRsp)
+
 }

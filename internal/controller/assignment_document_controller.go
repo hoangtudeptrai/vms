@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/hoangtu1372k2/common-go/reposity"
 	"github.com/hoangtu1372k2/vms/internal/model"
 	"github.com/hoangtu1372k2/vms/pkg/statuscode"
@@ -165,26 +166,37 @@ func DeleteAssignmentDocument(c *gin.Context) {
 // @Tags         AssignmentDocument
 // @Accept       json
 // @Produce      json
-// @Param        assignment_id  path  string  true  "Assignment ID"
+// @Param        assignmentID  path  string  true  "Assignment ID"
 // @Success      200  {object}  model.JsonDTORsp[[]model.AssignmentDocument]
 // @Failure      500  {object}  model.JsonDTORsp[[]model.AssignmentDocument]
-// @Router       /assignment-documents/assignment/{assignment_id} [get]
+// @Router       /assignment-documents/assignment/{assignmentID} [get]
 // @Security     BearerAuth
 func GetAssignmentDocumentsByAssignment(c *gin.Context) {
-	jsonRsp := model.NewJsonDTORsp[[]model.AssignmentDocument]()
+	jsonRsp := model.NewJsonDTOListRsp[model.DTOAssignmentDocument]()
 
-	assignmentID := c.Param("assignment_id")
-	filter := fmt.Sprintf("assignment_id = '%s' ORDER BY created_at DESC", assignmentID)
+	assignmentID := c.Param("assignmentID")
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.AssignmentDocument, model.AssignmentDocument](filter)
+	query := reposity.NewQuery[model.DTOAssignmentDocument, model.AssignmentDocument]()
+
+	fmt.Println("assignment_id", assignmentID)
+
+	id, err := uuid.Parse(assignmentID)
+	if err != nil {
+		jsonRsp.Code = statuscode.StatusBindingInputJsonFailed
+		jsonRsp.Message = "ID không hợp lệ"
+		c.JSON(http.StatusBadRequest, &jsonRsp)
+		return
+	}
+	query.AddConditionOfTextField("AND", "assignment_id", "=", id)
+
+	dtos, _, err := query.ExecNoPaging("-created_at")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
-		jsonRsp.Message = err.Error()
+		jsonRsp.Message = "Lỗi khi lấy danh sách tài liệu của bài tập: " + err.Error()
 		c.JSON(http.StatusInternalServerError, &jsonRsp)
 		return
 	}
 
-	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
 	jsonRsp.Data = dtos
 	c.JSON(http.StatusOK, &jsonRsp)
 }

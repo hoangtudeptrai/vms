@@ -42,7 +42,7 @@ func main() {
 	cfg.SetDefault("sql_sslmode", "disable")
 	cfg.SetDefault("sql_dbname", "DoAnLMS")
 	cfg.SetDefault("sql_user", "postgres")
-	cfg.SetDefault("sql_password", "12345678")
+	cfg.SetDefault("sql_password", "123")
 	cfg.SetDefault("sql_schema", "public")
 
 	// Load Config
