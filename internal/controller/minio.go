@@ -20,8 +20,8 @@ var minioClient *minio.Client
 // InitMinIO initializes the MinIO client
 func InitMinIO() error {
 	endpoint := "127.0.0.1:9000"
-	accessKey := "fL2XYfjrgqVD3sZOuq1N"
-	secretKey := "WXopaEEHnqY2Fwm7NmlQOegBjYfug5sL5wRRpBtO"
+	accessKey := "minioadmin"
+	secretKey := "minioadmin"
 	useSSL := false
 
 	log.Printf("Đang khởi tạo MinIO client với endpoint: %s, accessKey: %s", endpoint, accessKey)

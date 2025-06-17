@@ -8,16 +8,20 @@ import (
 
 // Assignment DTOs
 type CreateAssignment struct {
+	ID          uuid.UUID  `json:"id"`
 	CourseID    uuid.UUID  `json:"course_id" binding:"required"`
 	Title       string     `json:"title" binding:"required"`
 	Description *string    `json:"description"`
+	Content     *string    `json:"content"`
 	DueDate     *time.Time `json:"due_date"`
 	MaxScore    int        `json:"max_score"`
+	CreatedBy   uuid.UUID  `json:"created_by" binding:"required"`
 }
 
 type UpdateAssignment struct {
 	Title            string     `json:"title"`
 	Description      *string    `json:"description"`
+	Content          *string    `json:"content"`
 	DueDate          *time.Time `json:"due_date"`
 	Status           string     `json:"status"`
 	MaxScore         int        `json:"max_score"`
@@ -163,7 +167,7 @@ type CreateAssignmentDocument struct {
 	FilePath     string    `json:"file_path" binding:"required"`
 	FileSize     *int64    `json:"file_size"`
 	FileType     *string   `json:"file_type"`
-	UploadedBy   string    `json:"uploaded_by" binding:"required"`
+	UploadedBy   uuid.UUID `json:"uploaded_by" binding:"required"`
 }
 
 type UpdateAssignmentDocument struct {

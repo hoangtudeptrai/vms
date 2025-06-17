@@ -170,7 +170,7 @@ func DeleteAssignment(c *gin.Context) {
 // @Param        description query   string  false "Search by description"
 // @Success      200  {object}  model.JsonDTORsp[[]model.Assignment]
 // @Failure      500  {object}  model.JsonDTORsp[[]model.Assignment]
-// @Router       /courses/{course_id}/assignments [get]
+// @Router       /assignments/course/{course_id} [get]
 // @Security     BearerAuth
 func GetAssignmentsByCourseID(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[[]model.Assignment]()

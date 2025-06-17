@@ -11,6 +11,7 @@ type Assignment struct {
 	CourseID         uuid.UUID  `json:"course_id" gorm:"type:uuid;not null"`
 	Title            string     `json:"title" gorm:"not null"`
 	Description      *string    `json:"description"`
+	Content          *string    `json:"content"`
 	DueDate          *time.Time `json:"due_date"`
 	CreatedBy        uuid.UUID  `json:"created_by" gorm:"type:uuid;not null"`
 	Status           string     `json:"status"` //gorm:"default:'draft';type:text;check:status IN ('draft','active','completed')
