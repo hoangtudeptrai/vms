@@ -203,10 +203,10 @@ func GetStudentEnrollments(c *gin.Context) {
 func GetCourseEnrollmentsByCourse(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[[]model.CourseEnrollment]()
 
-	courseID := c.Param("course_id")
-	filter := fmt.Sprintf("course_id = '%s' ORDER BY created_at DESC", courseID)
+	query := reposity.NewQuery[model.CourseEnrollment, model.CourseEnrollment]()
+	query.AddConditionOfTextField("AND", "course_id", "=", c.Param("course_id"))
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.CourseEnrollment, model.CourseEnrollment](filter)
+	dtos, _, err := query.ExecNoPaging("-created_at")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
@@ -214,7 +214,6 @@ func GetCourseEnrollmentsByCourse(c *gin.Context) {
 		return
 	}
 
-	c.Header("X-Total-Count", fmt.Sprintf("%d", total))
 	jsonRsp.Data = dtos
 	c.JSON(http.StatusOK, &jsonRsp)
 }
