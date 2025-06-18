@@ -93,7 +93,14 @@ func GetUserByID(c *gin.Context) {
 func Get(c *gin.Context) {
 	jsonRsp := model.NewJsonDTORsp[[]model.User]()
 
-	dtos, total, err := reposity.ReadAllItemsIntoDTO[model.User, model.User]("")
+	role := c.Query("role")
+	query := reposity.NewQuery[model.User, model.User]()
+
+	if role != "" {
+		query.AddConditionOfTextField("AND", "role", "=", role)
+	}
+
+	dtos, total, err := query.ExecNoPaging("-created_at")
 	if err != nil {
 		jsonRsp.Code = statuscode.StatusReadItemFailed
 		jsonRsp.Message = err.Error()
