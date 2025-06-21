@@ -26,6 +26,7 @@ type UpdateAssignment struct {
 	Status           string     `json:"status"`
 	MaxScore         int        `json:"max_score"`
 	AssignmentStatus string     `json:"assignment_status"`
+	CreatedBy        uuid.UUID  `json:"created_by"`
 }
 
 // Course DTOs
@@ -218,6 +219,7 @@ type UpdateAssignmentSubmissionFile struct {
 
 // AssignmentSubmission DTOs
 type CreateAssignmentSubmission struct {
+	ID           uuid.UUID `json:"id"`
 	AssignmentID uuid.UUID `json:"assignment_id" binding:"required"`
 	StudentID    uuid.UUID `json:"student_id" binding:"required"`
 	Content      *string   `json:"content"`
